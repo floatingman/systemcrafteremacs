@@ -1129,6 +1129,47 @@ Dired is a built-in file manager for Emacs that does some pretty amazing things!
 
 #+end_src
 
+***  Mac Specific configuration
+#+begin_src emacs-lisp
+
+  (when (eq system-type 'darwin)
+    (setq ns-use-native-fullscreen nil)
+    ;; brew install coreutils
+    (if (executable-find "gls")
+        (progn
+          (setq insert-directory-program "gls")
+          (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+      (setq dired-listing-switches "-ahlF"))
+    (defun copy-from-osx ()
+      "Handle copy/paste intelligently on osx."
+      (let ((pbpaste (purecopy "/usr/bin/pbpaste")))
+        (if (and (eq system-type 'darwin)
+                 (file-exists-p pbpaste))
+            (let ((tramp-mode nil)
+                  (default-directory "~"))
+              (shell-command-to-string pbpaste)))))
+
+    (defun paste-to-osx (text &optional push)
+      (let ((process-connection-type nil))
+        (let ((proc (start-process "pbcopy" "*Messages*" "/usr/bin/pbcopy")))
+          (process-send-string proc text)
+          (process-send-eof proc))))
+    (setq interprogram-cut-function 'paste-to-osx
+          interprogram-paste-function 'copy-from-osx)
+
+    (defun move-file-to-trash (file)
+      "Use `trash' to move FILE to the system trash.
+  When using Homebrew, install it using \"brew install trash\"."
+      (call-process (executable-find "trash")
+                    nil 0 nil
+                    file))
+
+    ;; Trackpad scrolling
+    (global-set-key [wheel-up] 'previous-line)
+    (global-set-key [wheel-down] 'next-line))
+
+
+#+end_src
 * Applications
 
 ** Some App
