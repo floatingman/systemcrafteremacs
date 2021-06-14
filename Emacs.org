@@ -862,7 +862,7 @@ Here are some settings that will help with editing files kept under version cont
 
   (setq vc-follow-symlinks t)
 
-  #+end_src
+#+end_src
 
 ** Commenting
 
