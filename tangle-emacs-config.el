@@ -1,5 +1,5 @@
 (require 'org)
-(load-file "lisp/dw-settings.el")
+(load-file "~/.emacs.d/lisp/dw-settings.el")
 
 ;; Don't ask when evaluating code blocks
 (setq org-confirm-babel-evaluate nil)

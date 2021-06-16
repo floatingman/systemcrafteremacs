@@ -1,6 +1,6 @@
 (require 'map) ;; Needed for map-merge
 
-(setq dn/system-settings
+(setq dw/system-settings
   (map-merge
     'list
     '((emacs/default-face-size . 220)
