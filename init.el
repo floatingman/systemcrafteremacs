@@ -64,6 +64,10 @@
 ;; Add my library path to load-path
 (push "~/.emacs.d/lisp" load-path)
 
+(set-default-coding-systems 'utf-8)
+
+(server-start)
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar

@@ -114,6 +114,22 @@ Load a folder full of custom lisp code
 
 #+end_src
 
+* Default Coding System
+This prevents warnings when opening files
+
+#+begin_src emacs-lisp
+
+  (set-default-coding-systems 'utf-8)
+
+#+end_src
+
+* Server Mode
+Starts a server so emacs will not open new instances
+
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+
 * Basic UI Configuration
 
 This section configures basic UI settings that remove unneeded elements to make Emacs look a lot more minimal and modern.  If you're just getting started in Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)= line if you'd like to still see that.
