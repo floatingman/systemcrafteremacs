@@ -1,0 +1,73 @@
+#+TITLE: System Settings
+#+PROPERTY: header-args    :tangle-mode (identity #o444)
+#+PROPERTY: header-args:sh :tangle-mode (identity #o555)
+
+* Utility Scripts
+
+** Update Emacs Config
+
+#+begin_src sh :tangle update-emacs-config :shebang #!/bin/sh
+
+# Navigate to the directory of this script (generally ~/.dotfiles/)
+cd $(dirname $(readlink -f $0))
+
+# The heavy lifting is done by an Emacs script
+emacs -Q --script tangle-emacs-config.el
+
+# Make sure any running Emacs instance gets updated settings
+emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs is not currently running'"
+
+#+end_src
+
+** Tangle Org files
+
+#+begin_src emacs-lisp :tangle tangle-emacs-config.el
+
+  (require 'org)
+  (load-file "lisp/dw-settings.el")
+
+  ;; Don't ask when evaluating code blocks
+  (setq org-confirm-babel-evaluate nil)
+
+  (let* ((dotfiles-path (expand-file-name "."))
+         (org-files (directory-files dotfiles-path nil "\\.org$")))
+
+    (defun dw/tangle-org-file (org-file)
+      (message "\n\033[1;32mUpdating %s\033[0m\n" org-file)
+      (org-babel-tangle-file (expand-file-name org-file dotfiles-path)))
+
+    ;; Tangle Systems.org first
+    (dw/tangle-org-file "Systems.org")
+
+    (dolist (org-file org-files)
+      (unless (member org-file '("README.org" "Systems.org"))
+        (dw/tangle-org-file org-file))))
+
+#+end_src
+* Per-System Settings
+
+These are default and custom settings that can be based on hostname
+
+** Defaults
+#+begin_src emacs-lisp :tangle ./per-system-settings.el :noweb yes
+(require 'map) ;; Needed for map-merge
+
+(setq dn/system-settings
+  (map-merge
+    'list
+    '((emacs/default-face-size . 220)
+      (emacs/variable-face-size . 245)
+      (emacs/fixed-face-size . 200))
+    <<system-settings>>))
+#+end_src
+
+** Sunstreaker
+
+#+begin_src emacs-lisp :noweb-ref system-settings :noweb-sep ""
+
+  (when (equal system-name "sunstreaker")
+    '((emacs/default-face-size . 190)
+      (emacs/variable-face-size . 200)
+      (emacs/fixed-face-size . 190)))
+
+#+end_src
