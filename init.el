@@ -129,12 +129,12 @@
     (use-package general
       :after evil
       :config
-      (general-create-definer efs/leader-keys
+      (general-create-definer dn/leader-key-def
         :keymaps '(normal insert visual emacs)
         :prefix "SPC"
         :global-prefix "C-SPC")
 
-      (efs/leader-keys
+      (dn/leader-key-def
         "t"  '(:ignore t :which-key "toggles")
         "tt" '(counsel-load-theme :which-key "choose theme")
         "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org")))))
@@ -265,7 +265,7 @@
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
 
-(efs/leader-keys
+(dn/leader-key-def
   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
 (defun efs/org-font-setup ()
@@ -560,15 +560,28 @@
   :config (counsel-projectile-mode))
 
 (use-package magit
-  :commands magit-status
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+    :bind ("C-M-;" . magit-status)
+    :commands (magit-status magit-get-current-branch)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; NOTE: Make sure to configure a GitHub token before using this package!
-;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
-(use-package forge
-  :after magit)
+  (dn/leader-key-def
+    "g"   '(:ignore t :which-key "git")
+    "gs"  'magit-status
+    "gd"  'magit-diff-unstaged
+    "gc"  'magit-branch-or-checkout
+    "gl"   '(:ignore t :which-key "log")
+    "glc" 'magit-log-current
+    "glf" 'magit-log-buffer-file
+    "gb"  'magit-branch
+    "gP"  'magit-push-current
+    "gp"  'magit-pull-branch
+    "gf"  'magit-fetch
+    "gF"  'magit-fetch-all
+    "gr"  'magit-rebase)
+
+(use-package magit-todos
+  :defer t)
 
 (setq vc-follow-symlinks t)
 
