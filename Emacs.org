@@ -127,7 +127,10 @@ This prevents warnings when opening files
 Starts a server so emacs will not open new instances
 
 #+begin_src emacs-lisp
-  (server-start)
+;; only start emacs server when it's not started, I hate warnings.
+(setq server-socket-file "/tmp/emacs1000/server")
+(unless (file-exists-p server-socket-file)
+  (server-start))
 #+end_src
 
 * Basic UI Configuration

@@ -66,7 +66,10 @@
 
 (set-default-coding-systems 'utf-8)
 
-(server-start)
+;; only start emacs server when it's not started, I hate warnings.
+(setq server-socket-file "/tmp/emacs1000/server")
+(unless (file-exists-p server-socket-file)
+  (server-start))
 
 (setq inhibit-startup-message t)
 
