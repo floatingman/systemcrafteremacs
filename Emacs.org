@@ -24,7 +24,8 @@
   - [[#escape-quits-all][Escape quits all]]
   - [[#rebind-c-u][Rebind C-u]]
   - [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
-- [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
+  - [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
+  - [[#evil-mode][Evil Mode]]
 - [[#ui-configuration][UI Configuration]]
   - [[#command-log-mode][Command Log Mode]]
   - [[#color-theme][Color Theme]]
@@ -33,6 +34,10 @@
     - [[#improved-candidate-sorting-with-prescientel][Improved Candidate Sorting with prescient.el]]
   - [[#helpful-help-commands][Helpful Help Commands]]
   - [[#text-scaling][Text Scaling]]
+- [[#editing-configuration][Editing Configuration]]
+  - [[#tab-widths][Tab Widths]]
+  - [[#use-spaces-instead-of-tabs-for-indentation][Use spaces instead of tabs for indentation]]
+  - [[#commenting-lines][Commenting Lines]]
 - [[#org-mode][Org Mode]]
   - [[#better-font-faces][Better Font Faces]]
   - [[#basic-config][Basic Config]]
@@ -311,7 +316,8 @@ based on the prefix keys you entered.  Learned about this one from Spacemacs.
     (setq which-key-idle-delay 0.3))
 
 #+end_src
-* Simplify Leader Bindings (general.el)
+
+** Simplify Leader Bindings (general.el)
 
 [[https://github.com/noctuid/general.el][general.el]] is a fantastic library for defining prefixed keybindings, especially
 in conjunction with Evil modes.
@@ -331,6 +337,13 @@ in conjunction with Evil modes.
     (general-create-definer dn/ctrl-c-keys
       :prefix "C-c"))
 
+
+
+#+end_src
+
+** Evil Mode
+Evil mode lets you navigate and edit in Emacs just like Vim. I think of as supercharged Vim tt the ire of both Emacs and Vim users.
+#+begin_src emacs-lisp
 
   (defun dw/evil-hook ()
     (dolist (mode '(custom-mode
@@ -518,6 +531,34 @@ This is an example of using [[https://github.com/abo-abo/hydra][Hydra]] to desig
 
 #+end_src
 
+* Editing Configuration
+** Tab Widths
+
+Default to an indentation size of 2 spaces since it's the norm for pretty much every language I use.
+
+#+begin_src emacs-lisp
+
+  (setq-default tab-width 2)
+  (setq-default evil-shift-width tab-width)
+
+#+end_src
+
+** Use spaces instead of tabs for indentation
+
+#+begin_src emacs-lisp
+
+  (setq-default indent-tabs-mode nil)
+
+#+end_src
+
+** Commenting Lines
+
+#+begin_src emacs-lisp
+
+  (use-package evil-nerd-commenter
+    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+#+end_src
 * Org Mode
 
 [[https://orgmode.org/][Org Mode]] is one of the hallmark features of Emacs.  It is a rich document editor, project planner, task and time tracker, blogging engine, and literate coding utility all wrapped up in one package.

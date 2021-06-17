@@ -146,7 +146,6 @@
   (general-create-definer dn/ctrl-c-keys
     :prefix "C-c"))
 
-
 (defun dw/evil-hook ()
   (dolist (mode '(custom-mode
                   eshell-mode
@@ -266,6 +265,14 @@
 
 (dn/leader-key-def
   "ts" '(hydra-text-scale/body :which-key "scale text"))
+
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+
+(setq-default indent-tabs-mode nil)
+
+(use-package evil-nerd-commenter
+  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
