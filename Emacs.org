@@ -3,6 +3,84 @@
 
 * Welcome!
 
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
+:CONTENTS:
+- [[#welcome][Welcome!]]
+- [[#system-settings][System Settings]]
+- [[#startup-performance][Startup Performance]]
+- [[#package-system-setup][Package System Setup]]
+  - [[#automatic-package-updates][Automatic Package Updates]]
+- [[#keep-emacs-clean][Keep Emacs clean]]
+- [[#update-load-path][Update Load Path]]
+- [[#default-coding-system][Default Coding System]]
+- [[#server-mode][Server Mode]]
+- [[#general-configuration][General Configuration]]
+  - [[#basic-ui-configuration][Basic UI Configuration]]
+  - [[#font-configuration][Font Configuration]]
+- [[#keybinding][Keybinding]]
+  - [[#escape-quits-all][Escape quits all]]
+  - [[#rebind-c-u][Rebind C-u]]
+  - [[#keybinding-panel-which-key][Keybinding Panel (which-key)]]
+- [[#simplify-leader-bindings-generalel][Simplify Leader Bindings (general.el)]]
+- [[#ui-configuration][UI Configuration]]
+  - [[#command-log-mode][Command Log Mode]]
+  - [[#color-theme][Color Theme]]
+  - [[#better-modeline][Better Modeline]]
+  - [[#ivy-and-counsel][Ivy and Counsel]]
+    - [[#improved-candidate-sorting-with-prescientel][Improved Candidate Sorting with prescient.el]]
+  - [[#helpful-help-commands][Helpful Help Commands]]
+  - [[#text-scaling][Text Scaling]]
+- [[#org-mode][Org Mode]]
+  - [[#better-font-faces][Better Font Faces]]
+  - [[#basic-config][Basic Config]]
+    - [[#nicer-heading-bullets][Nicer Heading Bullets]]
+    - [[#center-org-buffers][Center Org Buffers]]
+  - [[#configure-babel-languages][Configure Babel Languages]]
+  - [[#structure-templates][Structure Templates]]
+  - [[#update-table-of-contents-on-save][Update Table of Contents on Save]]
+- [[#development][Development]]
+  - [[#languages][Languages]]
+    - [[#ide-features-with-lsp-mode][IDE Features with lsp-mode]]
+      - [[#lsp-mode][lsp-mode]]
+      - [[#lsp-ui][lsp-ui]]
+      - [[#lsp-treemacs][lsp-treemacs]]
+      - [[#lsp-ivy][lsp-ivy]]
+    - [[#debugging-with-dap-mode][Debugging with dap-mode]]
+    - [[#typescript][TypeScript]]
+    - [[#python][Python]]
+  - [[#company-mode][Company Mode]]
+  - [[#projectile][Projectile]]
+  - [[#magit][Magit]]
+  - [[#magit-todos][magit-todos]]
+  - [[#version-control][Version Control]]
+  - [[#commenting][Commenting]]
+  - [[#rainbow-delimiters][Rainbow Delimiters]]
+- [[#terminals][Terminals]]
+  - [[#term-mode][term-mode]]
+    - [[#better-term-mode-colors][Better term-mode colors]]
+  - [[#vterm][vterm]]
+  - [[#shell-mode][shell-mode]]
+  - [[#eshell][Eshell]]
+  - [[#better-shell][Better Shell]]
+- [[#file-management][File Management]]
+  - [[#dired][Dired]]
+    - [[#key-bindings][Key Bindings]]
+      - [[#navigation][Navigation]]
+      - [[#marking-files][Marking files]]
+      - [[#copying-and-renaming-files][Copying and Renaming files]]
+      - [[#deleting-files][Deleting files]]
+      - [[#creating-and-extracting-archives][Creating and extracting archives]]
+      - [[#other-common-operations][Other common operations]]
+    - [[#configuration][Configuration]]
+    - [[#mac-specific-configuration][Mac Specific configuration]]
+- [[#applications][Applications]]
+  - [[#some-app][Some App]]
+- [[#runtime-performance][Runtime Performance]]
+:END:
+
 * System Settings
 
 These are various varables useful for multiple environment setup
@@ -84,6 +162,8 @@ You can also use =M-x auto-package-update-now= to update right now!
 
 #+end_src
 
+* Keep Emacs clean
+
 We use the [[https://github.com/emacscollective/no-littering/blob/master/no-littering.el][no-littering]] package to keep folders where we edit files and the Emacs configuration folder clean!  It knows about a wide variety of variables for built in Emacs features as well as those from community packages so it can be much easier than finding and setting these variables yourself.
 
 #+begin_src emacs-lisp
@@ -133,7 +213,9 @@ Starts a server so emacs will not open new instances
   (server-start))
 #+end_src
 
-* Basic UI Configuration
+* General Configuration
+
+** Basic UI Configuration
 
 This section configures basic UI settings that remove unneeded elements to make Emacs look a lot more minimal and modern.  If you're just getting started in Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)= line if you'd like to still see that.
 
@@ -173,8 +255,6 @@ This section configures basic UI settings that remove unneeded elements to make 
 
 ** Font Configuration
 
-I am using the [[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts for this configuration which will more than likely need to be installed on your machine.  Both can usually be found in the various Linux distro package managers or downloaded from the links above.
-
 #+begin_src emacs-lisp
 ;; Set the font face based on platform
 (pcase system-type
@@ -199,64 +279,93 @@ I am using the [[https://github.com/tonsky/FiraCode][Fira Code]] and [[https://f
                     :weight 'light)
 #+end_src
 
-* Keybinding Configuration
+* Keybinding 
 
-This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil-mode]] for a Vi-like modal editing experience.  [[https://github.com/noctuid/general.el][general.el]] is used for easy keybinding configuration that integrates well with which-key.  [[https://github.com/emacs-evil/evil-collection][evil-collection]] is used to automatically configure various Emacs modes with Vi-like keybindings for evil-mode.
+** Escape quits all
+#+begin_src emacs-lisp
+  ;; Make ESC quit prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+
+** Rebind C-u
+
+Since I let =evil-mode= take over =C-u= for buffer scrolling, I need to re-bind the =universal-argument= command to another key sequence.  I'm choosing =C-M-u= for this purpose.
 
 #+begin_src emacs-lisp
 
-    ;; Make ESC quit prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  (global-set-key (kbd "C-M-u") 'universal-argument)
 
-    (use-package general
-      :after evil
-      :config
-      (general-create-definer dn/leader-key-def
-        :keymaps '(normal insert visual emacs)
-        :prefix "SPC"
-        :global-prefix "C-SPC")
+#+end_src
 
-      (dn/leader-key-def
-        "t"  '(:ignore t :which-key "toggles")
-        "tt" '(counsel-load-theme :which-key "choose theme")
-        "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org")))))
+** Keybinding Panel (which-key)
+
+[[https://github.com/justbur/emacs-which-key][which-key]] is great for getting an overview of what keybindings are available
+based on the prefix keys you entered.  Learned about this one from Spacemacs.
+
+#+begin_src emacs-lisp
+
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config
+    (setq which-key-idle-delay 0.3))
+
+#+end_src
+* Simplify Leader Bindings (general.el)
+
+[[https://github.com/noctuid/general.el][general.el]] is a fantastic library for defining prefixed keybindings, especially
+in conjunction with Evil modes.
+
+#+begin_src emacs-lisp
+
+
+  (use-package general
+    :config
+    (general-evil-setup t)
+
+    (general-create-definer dn/leader-key-def
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC")
+
+    (general-create-definer dn/ctrl-c-keys
+      :prefix "C-c"))
+
 
   (defun dw/evil-hook ()
-       (dolist (mode '(custom-mode
-                     eshell-mode
-                     git-rebase-mode
-                     erc-mode
-                     circe-server-mode
-                     circe-chat-mode
-                     circe-query-mode
-                     sauron-mode
-                     term-mode))
-     (add-to-list 'evil-emacs-state-modes mode)))
+    (dolist (mode '(custom-mode
+                    eshell-mode
+                    git-rebase-mode
+                    erc-mode
+                    circe-server-mode
+                    circe-chat-mode
+                    circe-query-mode
+                    sauron-mode
+                    term-mode))
+      (add-to-list 'evil-emacs-state-modes mode)))
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode 1))
 
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    (setq evil-respect-visual-line-mode t)
+    (setq evil-undo-system 'undo-tree)
+    :config
+    (add-hook 'evil-mode-hook 'dw/evil-hook)
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-    (use-package undo-tree
-     :init
-     (global-undo-tree-mode 1))
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
-  :config
-  (add-hook 'evil-mode-hook 'dw/evil-hook)
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-
-    (use-package evil-collection
+  (use-package evil-collection
     :after evil
     :init
     (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
@@ -306,21 +415,6 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
-
-#+end_src
-
-** Which Key
-
-[[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
-
-#+begin_src emacs-lisp
-
-  (use-package which-key
-    :defer 0
-    :diminish which-key-mode
-    :config
-    (which-key-mode)
-    (setq which-key-idle-delay 1))
 
 #+end_src
 
@@ -666,21 +760,14 @@ You can add more =src= block templates below by copying one of the lines and cha
 
 #+end_src
 
-** Auto-tangle Configuration Files
+** Update Table of Contents on Save
 
-This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the Emacs.org file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+It's nice to have a table of contents section for long literate configuration files (like this one!) so I use =org-make-toc= to automatically update the ToC in any header with a property named =TOC=.
 
 #+begin_src emacs-lisp
 
-  ;; Automatically tangle our Emacs.org config file when we save it
-  (defun efs/org-babel-tangle-config ()
-    (when (string-equal (file-name-directory (buffer-file-name))
-                        (expand-file-name user-emacs-directory))
-      ;; Dynamic scoping to the rescue
-      (let ((org-confirm-babel-evaluate nil))
-        (org-babel-tangle))))
-
-  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+  (use-package org-make-toc
+    :hook (org-mode . org-make-toc-mode))
 
 #+end_src
 

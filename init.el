@@ -124,37 +124,43 @@
                     :weight 'light)
 
 ;; Make ESC quit prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-    (use-package general
-      :after evil
-      :config
-      (general-create-definer dn/leader-key-def
-        :keymaps '(normal insert visual emacs)
-        :prefix "SPC"
-        :global-prefix "C-SPC")
+(global-set-key (kbd "C-M-u") 'universal-argument)
 
-      (dn/leader-key-def
-        "t"  '(:ignore t :which-key "toggles")
-        "tt" '(counsel-load-theme :which-key "choose theme")
-        "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org")))))
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
 
-  (defun dw/evil-hook ()
-       (dolist (mode '(custom-mode
-                     eshell-mode
-                     git-rebase-mode
-                     erc-mode
-                     circe-server-mode
-                     circe-chat-mode
-                     circe-query-mode
-                     sauron-mode
-                     term-mode))
-     (add-to-list 'evil-emacs-state-modes mode)))
+(use-package general
+  :config
+  (general-evil-setup t)
+
+  (general-create-definer dn/leader-key-def
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (general-create-definer dn/ctrl-c-keys
+    :prefix "C-c"))
 
 
-    (use-package undo-tree
-     :init
-     (global-undo-tree-mode 1))
+(defun dw/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  git-rebase-mode
+                  erc-mode
+                  circe-server-mode
+                  circe-chat-mode
+                  circe-query-mode
+                  sauron-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+(use-package undo-tree
+  :init
+  (global-undo-tree-mode 1))
 
 (use-package evil
   :init
@@ -174,16 +180,16 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
-    (use-package evil-collection
-    :after evil
-    :init
-    (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
-    :custom
-    (evil-collection-outline-bind-tab-p nil)
-    :config
-    (setq evil-collection-mode-list
-          (remove 'lispy evil-collection-mode-list))
-    (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
+  :custom
+  (evil-collection-outline-bind-tab-p nil)
+  :config
+  (setq evil-collection-mode-list
+        (remove 'lispy evil-collection-mode-list))
+  (evil-collection-init))
 
 (use-package command-log-mode
   :commands command-log-mode)
@@ -196,13 +202,6 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
-
-(use-package which-key
-  :defer 0
-  :diminish which-key-mode
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 1))
 
 (use-package ivy
   :diminish
@@ -456,15 +455,8 @@
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-;; Automatically tangle our Emacs.org config file when we save it
-(defun efs/org-babel-tangle-config ()
-  (when (string-equal (file-name-directory (buffer-file-name))
-                      (expand-file-name user-emacs-directory))
-    ;; Dynamic scoping to the rescue
-    (let ((org-confirm-babel-evaluate nil))
-      (org-babel-tangle))))
-
-(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
