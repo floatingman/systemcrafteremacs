@@ -455,17 +455,17 @@
 	  (plist-put ivy-rich-display-transformers-list
 		     'ivy-switch-buffer
 		     '(:columns
-		 ((ivy-rich-candidate (:width 40))
+		       ((ivy-rich-candidate (:width 40))
 			(ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
 			(ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
 			(ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
 			(ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))  ; return file path relative to project root or `default-directory' if project is nil
-		 :predicate
-		 (lambda (cand)
+		       :predicate
+		       (lambda (cand)
 			 (if-let ((buffer (get-buffer cand)))
 			     ;; Don't mess with EXWM buffers
 			     (with-current-buffer buffer
-			 (not (derived-mode-p 'exwm-mode)))))))))
+			       (not (derived-mode-p 'exwm-mode)))))))))
 (use-package counsel
   :demand t
   :bind (("M-x" . counsel-M-x)
@@ -632,6 +632,157 @@ folder, otherwise delete a word"
   (aw-minibuffer-flag t)
   :config
   (ace-window-display-mode 1))
+
+(use-package winner
+  :after evil
+  :config
+  (winner-mode)
+  (define-key evil-window-map "u" 'winner-undo)
+  (define-key evil-window-map "U" 'winner-redo))
+
+(defun dn/org-mode-visual-fill ()
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :defer t
+  :hook (org-mode . dn/org-mode-visual-fill))
+
+(setq display-buffer-base-action
+        '(display-buffer-reuse-mode-window
+          display-buffer-reuse-window
+          display-buffer-same-window))
+
+(use-package expand-region
+  :bind (("M-[" . er/expand-region)
+         ("C-(" . er/mark-outside-pairs)))
+
+(use-package all-the-icons-dired)
+
+(use-package dired
+  :ensure nil
+  :straight nil
+  :defer 1
+  :commands (dired dired-jump)
+  :config
+  (setq dired-listing-switches "-agho --group-directories-first"
+        dired-omit-files "^\\.[^.].*"
+        dired-omit-verbose nil
+        dired-hide-details-hide-symlink-targets nil
+        delete-by-moving-to-trash t)
+
+  (autoload 'dired-omit-mode "dired-x")
+
+  (add-hook 'dired-load-hook
+            (lambda ()
+              (interactive)
+              (dired-collapse)))
+
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (interactive)
+              (dired-omit-mode 1)
+              (dired-hide-details-mode 1)
+              (all-the-icons-dired-mode 1)
+              (hl-line-mode 1)))
+  (use-package dired-rainbow
+      :defer 2
+      :config
+      (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
+      (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
+      (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
+      (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
+      (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
+      (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
+      (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
+      (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
+      (dired-rainbow-define log "#c17d11" ("log"))
+      (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
+      (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
+      (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
+      (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
+      (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
+      (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
+      (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
+      (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
+      (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
+      (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
+      (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
+
+    (use-package dired-single
+      :defer t)
+
+    (use-package dired-ranger
+      :defer t)
+
+    (use-package dired-collapse
+      :defer t)
+
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "H" 'dired-omit-mode
+      "l" 'dired-single-buffer
+      "y" 'dired-ranger-copy
+      "X" 'dired-ranger-move
+      "p" 'dired-ranger-paste))
+
+(when (eq system-type 'darwin)
+  (setq ns-use-native-fullscreen nil)
+  ;; brew install coreutils
+  (if (executable-find "gls")
+      (progn
+        (setq insert-directory-program "gls")
+        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+    (setq dired-listing-switches "-ahlF"))
+  (defun copy-from-osx ()
+    "Handle copy/paste intelligently on osx."
+    (let ((pbpaste (purecopy "/usr/bin/pbpaste")))
+      (if (and (eq system-type 'darwin)
+               (file-exists-p pbpaste))
+          (let ((tramp-mode nil)
+                (default-directory "~"))
+            (shell-command-to-string pbpaste)))))
+
+  (defun paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "/usr/bin/pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+  (setq interprogram-cut-function 'paste-to-osx
+        interprogram-paste-function 'copy-from-osx)
+
+  (defun move-file-to-trash (file)
+    "Use `trash' to move FILE to the system trash.
+When using Homebrew, install it using \"brew install trash\"."
+    (call-process (executable-find "trash")
+                  nil 0 nil
+                  file))
+
+  ;; Trackpad scrolling
+  (global-set-key [wheel-up] 'previous-line)
+  (global-set-key [wheel-down] 'next-line))
+
+(use-package openwith
+    :config
+    (setq openwith-associations
+          (list
+            (list (openwith-make-extension-regexp
+                  '("mpg" "mpeg" "mp3" "mp4"
+                    "avi" "wmv" "wav" "mov" "flv"
+                    "ogm" "ogg" "mkv"))
+                  "mpv"
+                  '(file))
+            (list (openwith-make-extension-regexp
+                  '("xbm" "pbm" "pgm" "ppm" "pnm"
+                    "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
+                    ;; causing feh to be opened...
+                    "feh"
+                    '(file))
+            (list (openwith-make-extension-regexp
+                  '("pdf"))
+                  "zathura"
+                  '(file)))))
 
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
@@ -835,14 +986,6 @@ folder, otherwise delete a word"
 (org-superstar-remove-leading-stars t)
 (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
-
 (with-eval-after-load 'org
   (org-babel-do-load-languages
       'org-babel-load-languages
@@ -1028,132 +1171,6 @@ folder, otherwise delete a word"
     :ensure t
     :bind (("C-'" . better-shell-shell)
            ("C-;" . better-shell-remote-open)))
-
-(use-package all-the-icons-dired)
-
-(use-package dired
-  :ensure nil
-  :straight nil
-  :defer 1
-  :commands (dired dired-jump)
-  :config
-  (setq dired-listing-switches "-agho --group-directories-first"
-        dired-omit-files "^\\.[^.].*"
-        dired-omit-verbose nil
-        dired-hide-details-hide-symlink-targets nil
-        delete-by-moving-to-trash t)
-
-  (autoload 'dired-omit-mode "dired-x")
-
-  (add-hook 'dired-load-hook
-            (lambda ()
-              (interactive)
-              (dired-collapse)))
-
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (interactive)
-              (dired-omit-mode 1)
-              (dired-hide-details-mode 1)
-              (all-the-icons-dired-mode 1)
-              (hl-line-mode 1)))
-  (use-package dired-rainbow
-      :defer 2
-      :config
-      (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
-      (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
-      (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
-      (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
-      (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
-      (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-      (dired-rainbow-define media "#de751f" ("mp3" "mp4" "mkv" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
-      (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
-      (dired-rainbow-define log "#c17d11" ("log"))
-      (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
-      (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
-      (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
-      (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
-      (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
-      (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
-      (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
-      (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
-      (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
-      (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
-      (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
-
-    (use-package dired-single
-      :defer t)
-
-    (use-package dired-ranger
-      :defer t)
-
-    (use-package dired-collapse
-      :defer t)
-
-    (evil-collection-define-key 'normal 'dired-mode-map
-      "h" 'dired-single-up-directory
-      "H" 'dired-omit-mode
-      "l" 'dired-single-buffer
-      "y" 'dired-ranger-copy
-      "X" 'dired-ranger-move
-      "p" 'dired-ranger-paste))
-
-(when (eq system-type 'darwin)
-  (setq ns-use-native-fullscreen nil)
-  ;; brew install coreutils
-  (if (executable-find "gls")
-      (progn
-        (setq insert-directory-program "gls")
-        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
-    (setq dired-listing-switches "-ahlF"))
-  (defun copy-from-osx ()
-    "Handle copy/paste intelligently on osx."
-    (let ((pbpaste (purecopy "/usr/bin/pbpaste")))
-      (if (and (eq system-type 'darwin)
-               (file-exists-p pbpaste))
-          (let ((tramp-mode nil)
-                (default-directory "~"))
-            (shell-command-to-string pbpaste)))))
-
-  (defun paste-to-osx (text &optional push)
-    (let ((process-connection-type nil))
-      (let ((proc (start-process "pbcopy" "*Messages*" "/usr/bin/pbcopy")))
-        (process-send-string proc text)
-        (process-send-eof proc))))
-  (setq interprogram-cut-function 'paste-to-osx
-        interprogram-paste-function 'copy-from-osx)
-
-  (defun move-file-to-trash (file)
-    "Use `trash' to move FILE to the system trash.
-When using Homebrew, install it using \"brew install trash\"."
-    (call-process (executable-find "trash")
-                  nil 0 nil
-                  file))
-
-  ;; Trackpad scrolling
-  (global-set-key [wheel-up] 'previous-line)
-  (global-set-key [wheel-down] 'next-line))
-
-(use-package openwith
-    :config
-    (setq openwith-associations
-          (list
-            (list (openwith-make-extension-regexp
-                  '("mpg" "mpeg" "mp3" "mp4"
-                    "avi" "wmv" "wav" "mov" "flv"
-                    "ogm" "ogg" "mkv"))
-                  "mpv"
-                  '(file))
-            (list (openwith-make-extension-regexp
-                  '("xbm" "pbm" "pgm" "ppm" "pnm"
-                    "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
-                    ;; causing feh to be opened...
-                    "feh"
-                    '(file))
-            (list (openwith-make-extension-regexp
-                  '("pdf"))
-                  "zathura"
-                  '(file)))))
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
