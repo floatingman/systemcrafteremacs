@@ -1458,5 +1458,27 @@ When using Homebrew, install it using \"brew install trash\"."
 
   (eshell-git-prompt-use-theme 'powerline))
 
+(use-package elfeed
+  :straight t
+  :config
+  (setq elfeed-feeds
+        '("https://www.youtube.com/feeds/videos.xml?channel_id=UCd8wC6TEa04SP9p4FjED12A"))
+  ;; Set youtube-dl executable path
+  (setq youtube-dl-path "/usr/bin/youtube-dl")
+  ;; Set video storage path
+  (setq youtube-dl-output-dir "~/Videos/")
+  (defun elfeed-download-video ()
+  (interactive)
+  (async-shell-command (format "%s -o \"%s%s\" -f bestvideo+bestaudio \"%s\""
+                               youtube-dl-path
+                               youtube-dl-output-dir
+                               "%(title)s.%(ext)s"
+                               (elfeed-entry-link elfeed-show-entry))))
+
+  ;; Add `youtube` tag to all videos
+  (add-hook 'elfeed-new-entry-hook
+            (elfeed-make-tagger :feed-url "youtube\\.com"
+                                :add '(video youtube))))
+
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))

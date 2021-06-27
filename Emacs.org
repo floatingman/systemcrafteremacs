@@ -132,6 +132,7 @@
   - [[#shell-mode][shell-mode]]
   - [[#eshell][Eshell]]
   - [[#better-shell][Better Shell]]
+- [[#elfeed][Elfeed]]
 - [[#runtime-performance][Runtime Performance]]
 :END:
 
@@ -2348,6 +2349,33 @@ Trying out [[http:https://github.com/killdash9/better-shell][Better-Shell]] to s
       :bind (("C-'" . better-shell-shell)
              ("C-;" . better-shell-remote-open)))
 #+end_src
+* Elfeed
+[[https://github.com/skeeto/elfeed][Elfeed]] is a great newsreader for Emacs.
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :straight t
+    :config
+    (setq elfeed-feeds
+          '("https://www.youtube.com/feeds/videos.xml?channel_id=UCd8wC6TEa04SP9p4FjED12A"))
+    ;; Set youtube-dl executable path
+    (setq youtube-dl-path "/usr/bin/youtube-dl")
+    ;; Set video storage path
+    (setq youtube-dl-output-dir "~/Videos/")
+    (defun elfeed-download-video ()
+    (interactive)
+    (async-shell-command (format "%s -o \"%s%s\" -f bestvideo+bestaudio \"%s\""
+                                 youtube-dl-path
+                                 youtube-dl-output-dir
+                                 "%(title)s.%(ext)s"
+                                 (elfeed-entry-link elfeed-show-entry))))
+
+    ;; Add `youtube` tag to all videos
+    (add-hook 'elfeed-new-entry-hook
+              (elfeed-make-tagger :feed-url "youtube\\.com"
+                                  :add '(video youtube))))
+#+end_src
+
 * Runtime Performance
 
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
