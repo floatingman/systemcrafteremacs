@@ -455,17 +455,17 @@
 	  (plist-put ivy-rich-display-transformers-list
 		     'ivy-switch-buffer
 		     '(:columns
-		 ((ivy-rich-candidate (:width 40))
+		       ((ivy-rich-candidate (:width 40))
 			(ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
 			(ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
 			(ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
 			(ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))  ; return file path relative to project root or `default-directory' if project is nil
-		 :predicate
-		 (lambda (cand)
+		       :predicate
+		       (lambda (cand)
 			 (if-let ((buffer (get-buffer cand)))
 			     ;; Don't mess with EXWM buffers
 			     (with-current-buffer buffer
-			 (not (derived-mode-p 'exwm-mode)))))))))
+			       (not (derived-mode-p 'exwm-mode)))))))))
 (use-package counsel
   :demand t
   :bind (("M-x" . counsel-M-x)
@@ -1462,18 +1462,176 @@ When using Homebrew, install it using \"brew install trash\"."
   :straight t
   :config
   (setq elfeed-feeds
-        '("https://www.youtube.com/feeds/videos.xml?channel_id=UCd8wC6TEa04SP9p4FjED12A"))
+        '("https://www.youtube.com/feeds/videos.xml?channel_id=UCd8wC6TEa04SP9p4FjED12A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCiDJtJKMICpb9B1qf7qjEOA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCYO_jab_esuFRV4b17AJtAw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC39z4_U8Kls0llAij3RRZAQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCcg4MQ4IrGArGAIf1BSMHSg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCiDJtJKMICpb9B1qf7qjEOA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCYtb6DikDDAFn5iD494bYnw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCH4pNKkgp6SKjb7-RfcrpLg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCyWpRDBBb84ogtALVskwciw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCivA7_KLKWo43tFcCkFvydw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCL-ZolAIU3J4Gx8KNjuLyLw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCkURR2CLd5iDc0B11rSkFeg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCraiFqWi0qSIxXxXN4IHFBQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCVkguwL6-IcxiktEwT_ooxQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCS0N5baNlQWJCUrhCEo8WlA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCvQECJukTDE2i6aCoMnS-Vg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCt_t6FwNsqr3WWoL6dFqG9w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCFrjdcImgcQVyFbK04MBEhA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCm0rmRuPifODAiW8zSLXs2A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC7UAVEyiMRCRb8dWCpxC5qA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCIwpdjmSUJmqJ8HwvIGNqig"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCi6roWLrNBmXCCF8URGQE3A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCzNf0liwUzMN6_pixbQlMhQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC9-y-6csu5WGm29I7JiwpnA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCCezIgC97PvUuR4_gbFUs5g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCXE_7rAvd92tXFS0d68sxdA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCPZqSeBf8fCeD667iWEGoSw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCEfj5PUP3pMYoOD_BuRTjYg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCOIHBHRbvncMo7Bf0Vx1zEQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCsU-ktDYPSvRyRqcFV4uXPw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCgBmKSbdGhiUJGnf2SCL0-w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCo-3ThNQmPmQSQL_L6Lx1_w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC6Om9kAkl32dWlDSNlDS9Iw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCwRXb5dUK4cvsHbx-rGzSgw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCoj6RxIAQq8kmJme-5dnN0Q"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCea5cMUa9xNU0kUtbRcTkqA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC5Wi_NYysX-LfcqT3Hq9Faw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UChturLXwYxwTOf_5krs0qvA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2bkHVIDjXS7sgrgjFtzOXQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2riBMG3qf1Di20ouRc76BA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCT2WgHiawhWgbahB0CNENkg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC8soFWRYXUoE6IIT16BrEZg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC8butISFwT-Wl7EV0hUK0BQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC18vz5hUUqxbGvym9ghtX_w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCnfXz2OeVJHYyebACjj4ZGA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC3s0BtrBJpwNDaflRSoiieQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC6iWKC08iw9K-R6Wh5pbZNQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC-r13SLLdZtZNmuC2bMnlmw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCES8U3Hy6VUxU0kwKBdxSWQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCfe_znKY1ukrqlGActlFmaQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCRE3NFNtdjR96-H4QG4U1Fg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCQhqmV26773qZhzqJz4VFcw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCVHICXXtKG7rZgtC5xonNdQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCMlfKvFrEpzg1PEpTzJDWoA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC6x7GwJxuoABSosgVXDYtTw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCQVsTJx31Q_6o1bW9BHaO2w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCh4pyZUB0mNzieaKv831flA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCO39zTYpvWL5jx2q15Ma_Hw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCR-DXc1voovS8nhAvccRZhg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCQMkHY8U6B9tefTQdPkpY7A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCjA8vRlL1c7BDixQRJ39-LQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCzGbp-rRVNwyFhn9gHoZr5g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCAk3t7WHs2zjsZpopox8Taw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC7Gmtjqs_LnhYQqTx469z0g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2umy62ojMfxzzHkVcgEUUA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCxFWzKZa74SyAqpJyVlG5Ew"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCFNJ1UTWUeLANzzfz4s3a1g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC1nHiti98G6m4OHZxQKMAaw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCJhQG42TEDbS3yshdzj2uPg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCG0jTvs7MHZHK-QaLQUgUig"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCfBqaomkd7VcyOibBX2xtqA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCVTyTA7-g9nopHeHbeuvpRA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC-ga3onzHSJFAGsIebtVeBg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCpJmBQ8iNHXeQ7jQWDyGe3A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2Yx6hbjxJeh2ZrFjRFox7w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCyouFZEIutTUVJQpE19n17A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC7_YxT-KID8kRbqZo7MyscQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCFCTrfb1JUJjs3Im8OZDtBw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCckETVOT59aYw80B36aP9vw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCgqGOWaaSv4AZ3Qe737eC_g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCtuLEGI-JkI6VFCW-5ZYtbw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCNdNYSjAuVgq6k60diMnfRg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCQNm-orYZ_Gv6rp2iTUoS7g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCPV4BsRMseQ23RKy73uplyw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCEBb1b_L6zDS3xTUrIALZOw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCaTznQhurW5AaiYPbhEA-KA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCGm3CO6LPcN-Y7HIuyE0Rew"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCDR1aI5qGaK7l4y0gqDGGLg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC9QOtgGrDyuYcfqsTG4rGDg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0sA4gvlWFHfdwaPlBDqnGg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCHFvKf-ATrhs3jbjj793N6w"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCcSeeATlWJJbXpOZRYOfaDg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCzlwH112g2vFyLF0hb2xDvw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC8TZwtZ17WKFJSmwTZQpBTA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2h7jWipUgmlt30Wu4oozKQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCe32g28-xzrG-sa11VfOSnw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCd6vizTYlSgpR6zJ8j5KiyA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC4eYXhJI4-7wSWc8UNRwD4A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCoxcjq-8xIDTYp3uz647V5A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCyp1gCHZJU_fGWFf2rtMkCg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCaV77OIv89qfsnncY5J2zvg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCiB8h9jD2Mlxx96ZFnGDSJw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCFe6jenM1Bc54qtBsIJGRZQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC6ZFN9Tx6xh-skXCuRHCDpQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC7_gcs09iThXybpVgjHZ_7g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0k27bBwxkKZdentShJj-kQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCn25nZ12HEZq_w_m_1DmbbA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCIWNozFjO8yVdJFsGKVmPgg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCMOqf8ab-42UUQIdVoKwjlQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCWNK7JuxL2jIpME2gjEnl-g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCAL3JXZSzSm8AlZyD3nQdBA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC68KSmHePPePCjW4v57VPQg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCI0vQvr9aFn27yR6Ej6n5UA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC54NcJvLCvM2CNaBjd5j6HA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCFJxE0l3cVYU4kHzi4qVEkw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCEKSACqYwBf1jbH4LnyMXeA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCOapBGVX8o19m1b0rlgsv0Q"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCvhsiQGy_zcNCiSbeXEjhLg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UClT2UAbC6j7TqOWurVhkuHQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCvLc83k5o11EIF1lEo0VmuQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCaTmuzKbejaJBvfeHLNYJqQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCemXXQkPWZGzi-_0rKGd0ow"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCh1VOd-1ZIGzDNNxAvtrX4A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCi38HMIvRpGgMJ0Tlm1WYdw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCqFzWxSCi39LnW1JKFR3efg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCfzlCWGWYyIQ0aLC5w48gBQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCNofX8wmSJh7NTklvMqueOA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCaIuFNmawD5i7_KgXYMH11A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCvBqzzvUBLCs8Y7Axb-jZew"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC6107grRI4m0o2-emgoDnAA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCCvcd0FYi58LwyTQP9LITpA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCfjaAUlTZRHJapJmCT6eyIg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC4E98HDsPXrf5kTKIgrSmtQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCSju5G2aFaWMqn-_0YBtq5A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC-EnprmCZ3OXyAoG7vjVNCA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCj1VqrHhDte54oLgPG4xpuQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCAiiOTio8Yu69c3XnR7nQBQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCWlhyyYBiD67Aju1CXUgaug"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCi7GJNg51C3jgmYTUwqoUXA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCX2Vhc0LIzSS9aMzhGFZ7PA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC8uT9cgJorJPWu7ITLGo9Ww"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC0ArlFuFYMpEewyRBzdLHiw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCyK4gDqgXia1a89ip0DglOA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCMtFAi84ehTSYSE9XoHefig"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC7IcJI8PUf5Z3zKxnZvTBog"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC06E4Y_-ybJgBUMtXx8uNNw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCGrpLw1W3P1_BC4J-Hpytww"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCUcAMH2MeZHQsVKJb8iVNUA"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCsfu-jdkX2_v2t3_igVQebg"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UC2kEuLCRUrWAvHlupobn4aw"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCuQV_7hln2oL_nhfEShubZQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCVi6ofFy7QyJJrZ9l0-fwbQ"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCXEJNKH9I4xsoyUNN3IL96A"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCuIUGmbCDklkDCDm-cQqv2g"
+          "https://www.youtube.com/feeds/videos.xml?channel_id=UCoC47do520os_4DBMEFGg4A"
+          ))
   ;; Set youtube-dl executable path
   (setq youtube-dl-path "/usr/bin/youtube-dl")
   ;; Set video storage path
   (setq youtube-dl-output-dir "~/Videos/")
   (defun elfeed-download-video ()
-  (interactive)
-  (async-shell-command (format "%s -o \"%s%s\" -f bestvideo+bestaudio \"%s\""
-                               youtube-dl-path
-                               youtube-dl-output-dir
-                               "%(title)s.%(ext)s"
-                               (elfeed-entry-link elfeed-show-entry))))
+    (interactive)
+    (async-shell-command (format "%s -o \"%s%s\" -f bestvideo+bestaudio \"%s\""
+                                 youtube-dl-path
+                                 youtube-dl-output-dir
+                                 "%(title)s.%(ext)s"
+                                 (elfeed-entry-link elfeed-show-entry))))
 
   ;; Add `youtube` tag to all videos
   (add-hook 'elfeed-new-entry-hook
