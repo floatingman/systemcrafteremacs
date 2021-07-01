@@ -1371,6 +1371,20 @@ When using Homebrew, install it using \"brew install trash\"."
 (use-package yaml-mode
   :mode "\\.ya?ml\\'")
 
+(use-package python-mode
+  :straight t
+  :custom
+  (python-shell-interpreter "python3")
+  (dap-python-executable "python3")
+  (dap-python-debugger 'debugpy)
+  :config
+  (require 'dap-python))
+
+(use-package pyvenv
+  :straight t
+  :config
+  (pyvenv-mode 1))
+
 (use-package compile
   :straight nil
   :custom

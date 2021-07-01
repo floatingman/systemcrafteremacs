@@ -118,6 +118,7 @@
     - [[#markdown][Markdown]]
     - [[#html][HTML]]
     - [[#yaml][YAML]]
+    - [[#python][Python]]
   - [[#compilation][Compilation]]
   - [[#productivity][Productivity]]
     - [[#syntax-checking-with-flycheck][Syntax checking with Flycheck]]
@@ -2136,6 +2137,27 @@ Configure TypeScript and JavaScript language modes
 #+begin_src emacs-lisp
   (use-package yaml-mode
     :mode "\\.ya?ml\\'")
+#+end_src
+
+*** Python
+#+begin_src emacs-lisp
+  (use-package python-mode
+    :straight t
+    :custom
+    (python-shell-interpreter "python3")
+    (dap-python-executable "python3")
+    (dap-python-debugger 'debugpy)
+    :config
+    (require 'dap-python))
+#+end_src
+
+You can use pyvenv package to use virtualenv environments in Emacs. The =pyvenv-activate= command should configure Emacs to cause =lsp-mode= and =dap-mode= to use the virtual environment when they are loaded, just select the path to your virtual environment before loading your project.
+
+#+begin_src emacs-lisp
+  (use-package pyvenv
+    :straight t
+    :config
+    (pyvenv-mode 1))
 #+end_src
 
 ** Compilation
