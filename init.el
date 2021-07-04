@@ -1533,8 +1533,8 @@ When using Homebrew, install it using \"brew install trash\"."
   (use-package eshell
     :hook (eshell-first-time-mode . dw/eshell-configure)
     :init
-    (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/")
-          eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias"))
+    (setq eshell-directory-name "~/.emacs.d/eshell/")
+          eshell-aliases-file (expand-file-name "~/.emacs.d/eshell/alias"))
 
   (use-package eshell-z
     :hook ((eshell-mode . (lambda () (require 'eshell-z)))
