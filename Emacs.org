@@ -126,12 +126,17 @@
     - [[#smart-parens][Smart Parens]]
     - [[#rainbow-delimiters][Rainbow Delimiters]]
     - [[#rainbow-mode][Rainbow Mode]]
-- [[#terminals][Terminals]]
-  - [[#term-mode][term-mode]]
-    - [[#better-term-mode-colors][Better term-mode colors]]
-  - [[#vterm][vterm]]
-  - [[#shell-mode][shell-mode]]
+- [[#applications][Applications]]
+  - [[#binding-prefix][Binding Prefix]]
   - [[#eshell][Eshell]]
+    - [[#configuration][Configuration]]
+    - [[#visual-commands][Visual Commands]]
+    - [[#fish-completion][Fish Completion]]
+    - [[#command-highlighting][Command Highlighting]]
+    - [[#history-autocompletion][History Autocompletion]]
+    - [[#toggling-eshell][Toggling Eshell]]
+  - [[#vterm][vterm]]
+  - [[#multi-term][multi-term]]
   - [[#better-shell][Better Shell]]
 - [[#elfeed][Elfeed]]
 - [[#runtime-performance][Runtime Performance]]
@@ -2228,87 +2233,12 @@ Sets the background of HTML color strings in buffers to be the color mentioned.
 
 #+end_src
 
-* Terminals
-
-** term-mode
-
-=term-mode= is a built-in terminal emulator in Emacs.  Because it is written in Emacs Lisp, you can start using it immediately with very little configuration.  If you are on Linux or macOS, =term-mode= is a great choice to get started because it supports fairly complex terminal applications (=htop=, =vim=, etc) and works pretty reliably.  However, because it is written in Emacs Lisp, it can be slower than other options like =vterm=.  The speed will only be an issue if you regularly run console apps with a lot of output.
-
-One important thing to understand is =line-mode= versus =char-mode=.  =line-mode= enables you to use normal Emacs keybindings while moving around in the terminal buffer while =char-mode= sends most of your keypresses to the underlying terminal.  While using =term-mode=, you will want to be in =char-mode= for any terminal applications that have their own keybindings.  If you're just in your usual shell, =line-mode= is sufficient and feels more integrated with Emacs.
-
-With =evil-collection= installed, you will automatically switch to =char-mode= when you enter Evil's insert mode (press =i=).  You will automatically be switched back to =line-mode= when you enter Evil's normal mode (press =ESC=).
-
-Run a terminal with =M-x term!=
-
-*Useful key bindings:*
-
-- =C-c C-p= / =C-c C-n= - go back and forward in the buffer's prompts (also =[[= and =]]= with evil-mode)
-- =C-c C-k= - Enter char-mode
-- =C-c C-j= - Return to line-mode
-- If you have =evil-collection= installed, =term-mode= will enter char mode when you use Evil's Insert mode
-
+* Applications
+** Binding Prefix
 #+begin_src emacs-lisp
-
-  (use-package term
-    :commands term
-    :config
-    (setq explicit-shell-file-name "zsh") ;; Change this to zsh, etc
-    ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
-
-    ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
-    (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
-
+  (dn/leader-key-def
+    "a" '(:ignore t :which-key "apps"))
 #+end_src
-
-*** Better term-mode colors
-
-The =eterm-256color= package enhances the output of =term-mode= to enable handling of a wider range of color codes so that many popular terminal applications look as you would expect them to.  Keep in mind that this package requires =ncurses= to be installed on your machine so that it has access to the =tic= program.  Most Linux distributions come with this program installed already so you may not have to do anything extra to use it.
-
-#+begin_src emacs-lisp
-
-  (use-package eterm-256color
-    :hook (term-mode . eterm-256color-mode))
-
-#+end_src
-
-** vterm
-
-[[https://github.com/akermu/emacs-libvterm/][vterm]] is an improved terminal emulator package which uses a compiled native module to interact with the underlying terminal applications.  This enables it to be much faster than =term-mode= and to also provide a more complete terminal emulation experience.
-
-Make sure that you have the [[https://github.com/akermu/emacs-libvterm/#requirements][necessary dependencies]] installed before trying to use =vterm= because there is a module that will need to be compiled before you can use it successfully.
-
-#+begin_src emacs-lisp
-
-  (use-package vterm
-    :commands vterm
-    :config
-    (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
-    ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
-    (setq vterm-max-scrollback 10000))
-
-#+end_src
-
-** shell-mode
-
-[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Interactive-Shell.html#Interactive-Shell][shell-mode]] is a middle ground between =term-mode= and Eshell.  It is *not* a terminal emulator so more complex terminal programs will not run inside of it.  It does have much better integration with Emacs because all command input in this mode is handled by Emacs and then sent to the underlying shell once you press Enter.  This means that you can use =evil-mode='s editing motions on the command line, unlike in the terminal emulator modes above.
-
-*Useful key bindings:*
-
-- =C-c C-p= / =C-c C-n= - go back and forward in the buffer's prompts (also =[[= and =]]= with evil-mode)
-- =M-p= / =M-n= - go back and forward in the input history
-- =C-c C-u= - delete the current input string backwards up to the cursor
-- =counsel-shell-history= - A searchable history of commands typed into the shell
-
-One advantage of =shell-mode= on Windows is that it's the only way to run =cmd.exe=, PowerShell, Git Bash, etc from within Emacs.  Here's an example of how you would set up =shell-mode= to run PowerShell on Windows:
-
-#+begin_src emacs-lisp
-
-  (when (eq system-type 'windows-nt)
-    (setq explicit-shell-file-name "powershell.exe")
-    (setq explicit-powershell.exe-args '()))
-
-#+end_src
-
 ** Eshell
 
 [[https://www.gnu.org/software/emacs/manual/html_mono/eshell.html#Contributors-to-Eshell][Eshell]] is Emacs' own shell implementation written in Emacs Lisp.  It provides you with a cross-platform implementation (even on Windows!) of the common GNU utilities you would find on Linux and macOS (=ls=, =rm=, =mv=, =grep=, etc).  It also allows you to call Emacs Lisp functions directly from the shell and you can even set up aliases (like aliasing =vim= to =find-file=).  Eshell is also an Emacs Lisp REPL which allows you to evaluate full expressions at the shell.
@@ -2322,54 +2252,211 @@ The downsides to Eshell are that it can be harder to configure than other packag
 - =C-c C-u= - delete the current input string backwards up to the cursor
 - =counsel-esh-history= - A searchable history of commands typed into Eshell
 
-We will be covering Eshell more in future videos highlighting other things you can do with it.
-
 For more thoughts on Eshell, check out these articles by Pierre Neidhardt:
 - https://ambrevar.xyz/emacs-eshell/index.html
 - https://ambrevar.xyz/emacs-eshell-versus-shell/index.html
+*** Configuration 
+#+begin_src emacs-lisp
+    (defun read-file (file-path)
+      (with-temp-buffer
+        (insert-file-contents file-path)
+        (buffer-string)))
+
+    (defun dw/get-current-package-version ()
+      (interactive)
+      (let ((package-json-file (concat (eshell/pwd) "/package.json")))
+        (when (file-exists-p package-json-file)
+          (let* ((package-json-contents (read-file package-json-file))
+                 (package-json (ignore-errors (json-parse-string package-json-contents))))
+            (when package-json
+              (ignore-errors (gethash "version" package-json)))))))
+
+    (defun dw/map-line-to-status-char (line)
+      (cond ((string-match "^?\\? " line) "?")))
+
+    (defun dw/get-git-status-prompt ()
+      (let ((status-lines (cdr (process-lines "git" "status" "--porcelain" "-b"))))
+        (seq-uniq (seq-filter 'identity (mapcar 'dw/map-line-to-status-char status-lines)))))
+
+    (defun dw/get-prompt-path ()
+      (let* ((current-path (eshell/pwd))
+             (git-output (shell-command-to-string "git rev-parse --show-toplevel"))
+             (has-path (not (string-match "^fatal" git-output))))
+        (if (not has-path)
+          (abbreviate-file-name current-path)
+          (string-remove-prefix (file-name-directory git-output) current-path))))
+
+    ;; This prompt function mostly replicates my custom zsh prompt setup
+    ;; that is powered by github.com/denysdovhan/spaceship-prompt.
+    (defun dw/eshell-prompt ()
+      (let ((current-branch (magit-get-current-branch))
+            (package-version (dw/get-current-package-version)))
+        (concat
+         "\n"
+         (propertize (system-name) 'face `(:foreground "#62aeed"))
+         (propertize " ॐ " 'face `(:foreground "white"))
+         (propertize (dw/get-prompt-path) 'face `(:foreground "#82cfd3"))
+         (when current-branch
+           (concat
+            (propertize " • " 'face `(:foreground "white"))
+            (propertize (concat " " current-branch) 'face `(:foreground "#c475f0"))))
+         (when package-version
+           (concat
+            (propertize " @ " 'face `(:foreground "white"))
+            (propertize package-version 'face `(:foreground "#e8a206"))))
+         (propertize " • " 'face `(:foreground "white"))
+         (propertize (format-time-string "%I:%M:%S %p") 'face `(:foreground "#5a5b7f"))
+         (if (= (user-uid) 0)
+             (propertize "\n#" 'face `(:foreground "red2"))
+           (propertize "\nλ" 'face `(:foreground "#aece4a")))
+         (propertize " " 'face `(:foreground "white")))))
+
+  (add-hook 'eshell-banner-load-hook
+                (lambda ()
+                   (setq eshell-banner-message
+                         (concat "\n" (propertize " " 'display (create-image "~/.dotfiles/.emacs.d/images/flux_banner.png" 'png nil :scale 0.2 :align-to "center")) "\n\n"))))
+
+    (defun dw/eshell-configure ()
+      (require 'evil-collection-eshell)
+      (evil-collection-eshell-setup)
+
+      (use-package xterm-color)
+
+      (push 'eshell-tramp eshell-modules-list)
+      (push 'xterm-color-filter eshell-preoutput-filter-functions)
+      (delq 'eshell-handle-ansi-color eshell-output-filter-functions)
+
+      ;; Save command history when commands are entered
+      (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
+
+      (add-hook 'eshell-before-prompt-hook
+                (lambda ()
+                  (setq xterm-color-preserve-properties t)))
+
+      ;; Truncate buffer for performance
+      (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
+
+      ;; We want to use xterm-256color when running interactive commands
+      ;; in eshell but not during other times when we might be launching
+      ;; a shell command to gather its output.
+      (add-hook 'eshell-pre-command-hook
+                (lambda () (setenv "TERM" "xterm-256color")))
+      (add-hook 'eshell-post-command-hook
+                (lambda () (setenv "TERM" "dumb")))
+
+      ;; Use completion-at-point to provide completions in eshell
+      (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)
+
+      ;; Initialize the shell history
+      (eshell-hist-initialize)
+
+      (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'consult-history)
+      (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+      (evil-normalize-keymaps)
+
+      (setenv "PAGER" "cat")
+
+      (setq eshell-prompt-function      'dw/eshell-prompt
+            eshell-prompt-regexp        "^λ "
+            eshell-history-size         10000
+            eshell-buffer-maximum-lines 10000
+            eshell-hist-ignoredups t
+            eshell-highlight-prompt t
+            eshell-scroll-to-bottom-on-input t
+            eshell-prefer-lisp-functions nil))
+
+    (use-package eshell
+      :hook (eshell-first-time-mode . dw/eshell-configure)
+      :init
+      (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/")
+            eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias"))
+
+    (use-package eshell-z
+      :hook ((eshell-mode . (lambda () (require 'eshell-z)))
+             (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
+
+    (use-package exec-path-from-shell
+      :init
+      (setq exec-path-from-shell-check-startup-files nil)
+      :config
+      (when (memq window-system '(mac ns x))
+        (exec-path-from-shell-initialize)))
+
+    (dn/leader-key-def
+      "SPC" 'eshell)
+#+end_src
+*** Visual Commands
+#+begin_src emacs-lisp
+  (with-eval-after-load 'esh-opt
+    (setq eshell-destroy-buffer-when-process-dies t)
+    (setq eshell-visual-commands '("htop" "zsh" "nvim" "vim")))
+#+end_src
+*** Fish Completion
+#+begin_src emacs-lisp
+  (use-package fish-completion
+    :hook (eshell-mode . fish-completion-mode))
+#+end_src
+*** Command Highlighting
+#+begin_src emacs-lisp
+  (use-package eshell-syntax-highlighting
+    :after esh-mode
+    :config
+    (eshell-syntax-highlighting-global-mode +1))
+#+end_src
+*** History Autocompletion
+#+begin_src emacs-lisp
+  (use-package esh-autosuggest
+    :hook (eshell-mode . esh-autosuggest-mode)
+    :config
+    (setq esh-autosuggest-delay 0.5)
+    (set-face-foreground 'company-preview-common "#4b5668")
+    (set-face-background 'company-preview nil))
+#+end_src
+*** Toggling Eshell
+=eshell-toggle= allows me to toggle an Eshell window below the current buffer for the path (or project path) of the buffer.
+#+begin_src emacs-lisp
+  (use-package eshell-toggle
+    :bind ("C-M-'" . eshell-toggle)
+    :custom
+    (eshell-toggle-size-fraction 3)
+    (eshell-toggle-use-projectile-root t)
+    (eshell-toggle-run-command nil))
+#+end_src
+** vterm
+
+[[https://github.com/akermu/emacs-libvterm/][vterm]] is an improved terminal emulator package which uses a compiled native module to interact with the underlying terminal applications.  This enables it to be much faster than =term-mode= and to also provide a more complete terminal emulation experience.
+
+Make sure that you have the [[https://github.com/akermu/emacs-libvterm/#requirements][necessary dependencies]] installed before trying to use =vterm= because there is a module that will need to be compiled before you can use it successfully.
 
 #+begin_src emacs-lisp
 
-  (defun efs/configure-eshell ()
-    ;; Save command history when commands are entered
-    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
-
-    ;; Truncate buffer for performance
-    (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
-
-    ;; Bind some useful keys for evil-mode
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
-    (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
-    (evil-normalize-keymaps)
-
-    (setq eshell-history-size         10000
-          eshell-buffer-maximum-lines 10000
-          eshell-hist-ignoredups t
-          eshell-scroll-to-bottom-on-input t))
-
-  (use-package eshell-git-prompt
-    :after eshell)
-
-  (use-package eshell
-    :hook (eshell-first-time-mode . efs/configure-eshell)
+  (use-package vterm
+    :commands vterm
     :config
-
-    (with-eval-after-load 'esh-opt
-      (setq eshell-destroy-buffer-when-process-dies t)
-      (setq eshell-visual-commands '("htop" "zsh" "vim")))
-
-    (eshell-git-prompt-use-theme 'powerline))
-
+    (setq vterm-max-scrollback 10000))
 
 #+end_src
-
+** multi-term
+Some helpful configuration tips can be found [[http://rawsyntax.com/blog/learn-emacs-zsh-and-multi-term/][here]]
+#+begin_src emacs-lisp
+  (use-package multi-term
+    :commands multi-term-next
+    :config
+    (setq term-buffer-maximum-size 10000)
+    (setq term-scroll-to-bottom-on-output t)
+    (add-hook 'term-mode-hook
+              (lambda ()
+                (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+                (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next)))))
+  (dn/leader-key-def
+    "C-SPC" 'multi-term-next)
+#+end_src
 ** Better Shell
 Trying out [[http:https://github.com/killdash9/better-shell][Better-Shell]] to see if it makes my shell experince better
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package better-shell
-      :ensure t
-      :bind (("C-'" . better-shell-shell)
-             ("C-;" . better-shell-remote-open)))
+      :straight t)
+
 #+end_src
 * Elfeed
 [[https://github.com/skeeto/elfeed][Elfeed]] is a great newsreader for Emacs.
