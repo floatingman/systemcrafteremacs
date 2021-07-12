@@ -178,7 +178,7 @@
 
 (use-package spacegray-theme :defer t)
 (use-package doom-themes :defer t)
-(load-theme 'doom-palenight t)
+(load-theme 'doom-gruvbox t)
 (doom-themes-visual-bell-config)
 
 ;; Set the font face based on platform
@@ -455,17 +455,17 @@
 	  (plist-put ivy-rich-display-transformers-list
 		     'ivy-switch-buffer
 		     '(:columns
-		       ((ivy-rich-candidate (:width 40))
+		 ((ivy-rich-candidate (:width 40))
 			(ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
 			(ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
 			(ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
 			(ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))  ; return file path relative to project root or `default-directory' if project is nil
-		       :predicate
-		       (lambda (cand)
+		 :predicate
+		 (lambda (cand)
 			 (if-let ((buffer (get-buffer cand)))
 			     ;; Don't mess with EXWM buffers
 			     (with-current-buffer buffer
-			       (not (derived-mode-p 'exwm-mode)))))))))
+			 (not (derived-mode-p 'exwm-mode)))))))))
 (use-package counsel
   :demand t
   :bind (("M-x" . counsel-M-x)
@@ -667,7 +667,6 @@ folder, otherwise delete a word"
   :commands (dired dired-jump)
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
-        dired-omit-files "^\\.[^.].*"
         dired-omit-verbose nil
         dired-hide-details-hide-symlink-targets nil
         delete-by-moving-to-trash t)
