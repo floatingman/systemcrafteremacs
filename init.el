@@ -199,7 +199,7 @@
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
                     ;; :font "Cantarell"
-                    :font "Iosevka Aile"
+                    :font "Iosevka"
                     :height (dw/system-settings-get 'emacs/variable-face-size)
                     :weight 'light)
 
