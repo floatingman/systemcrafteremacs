@@ -463,22 +463,13 @@ Don't warn when advice is added for functions
   (setq ad-redefinition-action 'accept)
 #+end_src
 ** Theme
-These days I bounce around between themes included with [[https://github.com/hlissner/emacs-doom-themes][DOOM Themes]] since they're well-designed and integrate with a lot of Emacs packages.
+Trying out Base16 themes
 
 A nice gallery of Emacs themes can be found at https://emacsthemes.com/.
-
-Alternate themes:
-
-- =doom-snazzy=
-- =doom-vibrant=
-
 #+begin_src emacs-lisp
-
-  (use-package spacegray-theme :defer t)
-  (use-package doom-themes :defer t)
-  (load-theme 'doom-gruvbox t)
-  (doom-themes-visual-bell-config)
-
+  (use-package base16-theme
+    :config
+    (load-theme 'base16-tomorrow t))
 #+end_src
 ** Font
 *** Set the font
