@@ -1017,7 +1017,7 @@ When using Homebrew, install it using \"brew install trash\"."
   :straight t
   :hook
   (after-init . org-roam-mode)
-  :config
+  :init
   (setq org-roam-v2-ack t)
   :custom
   (org-roam-directory "~/Notes/Roam/")

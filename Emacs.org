@@ -1697,7 +1697,7 @@ I previously used =org-tree-slide= for presentations before trying out =org-pres
     :straight t
     :hook
     (after-init . org-roam-mode)
-    :config
+    :init
     (setq org-roam-v2-ack t)
     :custom
     (org-roam-directory "~/Notes/Roam/")
