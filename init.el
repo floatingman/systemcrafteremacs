@@ -41,14 +41,79 @@
 ;; Use straight.el for use-package expressions
 (straight-use-package 'use-package)
 
-;; Load the helper package for commands like `straight-x-clean-unused-repos'
-(require 'straight-x)
+(straight-use-package '(setup :type git :host nil :repo "https://git.sr.ht/~pkal/setup"))
+(require 'setup)
+
+;; Uncomment this for debugging purposes
+;; (defun dw/log-require (&rest args)
+;;   (with-current-buffer (get-buffer-create "*require-log*")
+;;     (insert (format "%s\n"
+;;                     (file-name-nondirectory (car args))))))
+;; (add-to-list 'after-load-functions #'dw/log-require)
+
+(setup-define :straight
+  (lambda (recipe)
+    `(unless (straight-use-package ',recipe)
+       ,(setup-quit)))
+  :documentation
+  "Install RECIPE with `straight-use-package'.
+This macro can be used as HEAD, and will replace itself with the
+first RECIPE's package."
+  :repeatable t
+  :shorthand (lambda (sexp)
+               (let ((recipe (cadr sexp)))
+                 (if (consp recipe)
+                     (car recipe)
+                   recipe))))
+
+(setup-define :straight-when
+  (lambda (recipe condition)
+    `(if ,condition
+         (straight-use-package ',recipe)
+       ,(setup-quit)))
+  :documentation
+  "Install RECIPE with `straight-use-package' when CONDITION is met.
+If CONDITION is false, stop evaluating the body.  This macro can
+be used as HEAD, and will replace itself with the RECIPE's
+package.  This macro is not repeatable."
+  :repeatable nil
+  :indent 1
+  :shorthand (lambda (sexp)
+               (let ((recipe (cadr sexp)))
+                 (if (consp recipe) (car recipe) recipe))))
+
+(setup-define :delay
+              (lambda (&rest time)
+                '(run-with-idle-timer ,(or time 1)
+                                      nil
+                                      ;; Don't repeat
+                                      (lambda () (require ',(setup-get 'feature)))))
+              :documentation "Delay loading the feature until a certain amount of idle time has passed")
+
+(setup-define :disabled
+  (lambda ()
+    `,(setup-quit))
+  :documentation "Always stop evaluating the body.")
+
+(setup-define :load-after
+    (lambda (features &rest body)
+      (let ((body `(progn
+                     (require ',(setup-get 'feature))
+                     ,@body)))
+        (dolist (feature (if (listp features)
+                             (nreverse features)
+                           (list features)))
+          (setq body `(with-eval-after-load ',feature ,body)))
+        body))
+  :documentation "Load the current feature after FEATURES."
+  :indent 1)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
         url-history-file (expand-file-name "url/history" user-emacs-directory))
 
-(use-package no-littering)
+(setup (:straight no-littering)
+       (require 'no-littering))
 
 ;; Keep customization settings in a temporary file (thanks Ambrevar!)
 (setq custom-file
@@ -72,25 +137,37 @@
 
 (global-set-key (kbd "C-M-u") 'universal-argument)
 
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
+(setup (:straight which-key)
+  (diminish 'which-key-mode)
+  (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
-(use-package general
-  :config
+(setup (:straight general)
   (general-evil-setup t)
-
   (general-create-definer dn/leader-key-def
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
-
   (general-create-definer dn/ctrl-c-keys
     :prefix "C-c"))
 
-(defun dw/evil-hook ()
+(setup (:straight undo-tree)
+  (setq undo-tree-auto-save-history nil)
+  (global-undo-tree-mode 1))
+
+defun dw/evil-hook ()
+
+(setup (:straight evil)
+  ;; Pre-load configuration
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-respect-visual-line-mode t)
+  (setq evil-undo-system 'undo-tree)
+  ;; Activate evil mode
+  (evil-mode 1)
+
   (dolist (mode '(custom-mode
                   eshell-mode
                   git-rebase-mode
@@ -100,39 +177,23 @@
                   circe-query-mode
                   sauron-mode
                   term-mode))
-    (add-to-list 'evil-emacs-state-modes mode)))
-(use-package undo-tree
-  :init
-  (global-undo-tree-mode 1))
-
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
-  :config
-  (add-hook 'evil-mode-hook 'dw/evil-hook)
-  (evil-mode 1)
+    (add-to-list 'evil-emacs-state-modes mode))
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package evil-collection
-  :after evil
-  :init
-  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
-  :custom
-  (evil-collection-outline-bind-tab-p nil)
-  :config
-  (setq evil-collection-mode-list
-        (remove 'lispy evil-collection-mode-list))
-  (evil-collection-init))
+(setup (:straight evil-collection)
+  ;; Is this a bug in evil-collection?
+  (setq evil-collection-company-use-tng nil)
+  (:load-after evil
+    (:option evil-collection-outline-bind-tab-p nil
+             (remove evil-collection-mode-list) 'lispy
+             (remove evil-collection-mode-list) 'org-present)
+    (evil-collection-init)))
 
 (setq inhibit-startup-message t)
 
