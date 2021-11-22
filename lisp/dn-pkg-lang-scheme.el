@@ -1,5 +1,5 @@
 ;;;; -*- lexical-binding: t; -*-
 
-(provide 'mf-pkg-lang-scheme)
+(provide 'dn-pkg-lang-scheme)
 
 (setup (:pkg geiser))

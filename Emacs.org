@@ -1613,12 +1613,12 @@ to all elements of STATE. This is intended to be used with ':bind'."
 #+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-scheme.el
 ;;;; -*- lexical-binding: t; -*-
 
-(provide 'mf-pkg-lang-scheme)
+(provide 'dn-pkg-lang-scheme)
 
 (setup (:pkg geiser))
 #+end_src
-* dn-key-binding
-#+begin_src emacs-lisp :tangle lisp/dn-key-binding.el
+* dn-key-bindings
+#+begin_src emacs-lisp :tangle lisp/dn-key-bindings.el
   ;;;; -*- lexical-binding: t; -*-
 
 ;;; ============================================================================
