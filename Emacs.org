@@ -1209,7 +1209,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-project)
 #+end_src
 * dn-pkg-lang-org
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang.el
+#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-org.el
   ;;;; -*- lexical-binding: t; -*-
 
 (defvar mf/dir-notes
@@ -1361,7 +1361,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-lang-org)
 #+end_src
 * dn-pkg-lang-lisp
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang.el
+#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-lisp.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg evil-cleverparens)
