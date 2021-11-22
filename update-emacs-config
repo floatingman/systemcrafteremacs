@@ -1,6 +1,3 @@
 #!/bin/sh
 # The heavy lifting is done by an Emacs script
 emacs -Q --script ~/.emacs.d/tangle-emacs-config.el
-
-# Make sure any running Emacs instance gets updated settings
-emacsclient -e '(load-file "~/.emacs.d/per-system-settings.el")' -a "echo 'Emacs is not currently running'"
