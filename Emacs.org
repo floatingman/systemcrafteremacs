@@ -69,46 +69,50 @@
 
 ;; Add our custom lisp modules to the Emacs load path so they can be discovered.
 (push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
+#+end_src
 
-;; For the list of native compilation ELN cache directories, delete all but the
-;; last element, which is always assumed to be the system path, and then cons a
-;; new path in our cache directory to the front. This effectively removes the
-;; entry for the original ~/.emacs.d/eln-cache/ and any others that are
-;; unwanted.
-(setq native-comp-eln-load-path
-      (cons (expand-file-name "eln-cache/" user-emacs-directory)
-            (last native-comp-eln-load-path)))
+Setup Native Compile when the time comes
+#+begin_src emacs-lisp :tangle no
+  ;; For the list of native compilation ELN cache directories, delete all but the
+  ;; last element, which is always assumed to be the system path, and then cons a
+  ;; new path in our cache directory to the front. This effectively removes the
+  ;; entry for the original ~/.emacs.d/eln-cache/ and any others that are
+  ;; unwanted.
+  (setq native-comp-eln-load-path
+        (cons (expand-file-name "eln-cache/" user-emacs-directory)
+              (last native-comp-eln-load-path)))
+#+end_src
 
-;;; ============================================================================
-;;; Set up the package manager
-;;; ============================================================================
+#+begin_src emacs-lisp :tangle early-init.el
+    ;;; ============================================================================
+    ;;; Set up the package manager
+    ;;; ============================================================================
 
-;; Pre-configure the package manager settings before it is loaded.
-(setq package-enable-at-startup nil)
-(setq package-quickstart nil)
-(setq straight-check-for-modifications '(check-on-save find-when-checking))
+    ;; Pre-configure the package manager settings before it is loaded.
+    (setq package-enable-at-startup nil)
+    (setq package-quickstart nil)
+    (setq straight-check-for-modifications '(check-on-save find-when-checking))
 
-;; Bootstrap the straight.el package manager if it is not already installed,
-;; then unconditionally load it. We use this rather than Emacs' built-in package
-;; manager.
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el"
-                         user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+    ;; Bootstrap the straight.el package manager if it is not already installed,
+    ;; then unconditionally load it. We use this rather than Emacs' built-in package
+    ;; manager.
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+           (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                             user-emacs-directory))
+          (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
 
-;; Additional post-setup of straight.el.
-(require 'straight-x)
-(defalias 'straight-ಠ_ಠ-mode nil)
-
+    ;; Additional post-setup of straight.el.
+    (require 'straight-x)
+    (defalias 'straight-ಠ_ಠ-mode nil)
 #+end_src
 
 * Init
@@ -1779,3 +1783,11 @@ to all elements of STATE. This is intended to be used with ':bind'."
 
 (provide 'dn-key-bindings)
 #+end_src
+
+
+Tangle on save? Reload after tangle? These hooks will ask you after every save.
+
+;; Local Variables:
+;; eval: (add-hook 'after-save-hook (lambda ()(if (y-or-n-p "Reload?")(load-file user-init-file))) nil t)
+;; eval: (add-hook 'after-save-hook (lambda ()(if (y-or-n-p "Tangle?")(org-babel-tangle))) nil t)
+;; End:
