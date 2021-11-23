@@ -1,3 +1,0 @@
-#!/bin/sh
-# The heavy lifting is done by an Emacs script
-emacs -Q --script ~/.emacs.d/tangle-emacs-config.el
