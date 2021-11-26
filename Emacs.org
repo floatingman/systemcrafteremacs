@@ -72,7 +72,7 @@
 #+end_src
 
 Setup Native Compile when the time comes
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle early-init.el
   ;; For the list of native compilation ELN cache directories, delete all but the
   ;; last element, which is always assumed to be the system path, and then cons a
   ;; new path in our cache directory to the front. This effectively removes the
@@ -487,8 +487,8 @@ to all elements of STATE. This is intended to be used with ':bind'."
   (setq read-process-output-max (* 64 1024))
   (setq redisplay-skip-fontification-on-input t)
   (setq ring-bell-function 'ignore)
-  (setq user-full-name "Michael Fiano")
-  (setq user-mail-address "mail@mfiano.net")
+  (setq user-full-name "Daniel Newman")
+  (setq user-mail-address "dan@danlovesprogramming.com")
   (setq-default fill-column 80)
   (setq-default lexical-binding t))
 
