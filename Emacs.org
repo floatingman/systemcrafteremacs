@@ -1,5 +1,5 @@
 #+title: My Super Special Emacs Config
-#+PROPERTY: header-args:emacs-lisp
+#+PROPERTY: header-args:emacs-lisp :mkdirp yes
 
 * Welcome!
 
