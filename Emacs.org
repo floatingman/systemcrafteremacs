@@ -1,5 +1,5 @@
 #+title: My Super Special Emacs Config
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp
 
 * Welcome!
 
@@ -11,7 +11,7 @@
 :END:
 
 * Early Init
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
 ;;;; -*- lexical-binding: t; -*-
 
 ;;; ============================================================================
@@ -72,7 +72,7 @@
 #+end_src
 
 Setup Native Compile when the time comes
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
   ;; For the list of native compilation ELN cache directories, delete all but the
   ;; last element, which is always assumed to be the system path, and then cons a
   ;; new path in our cache directory to the front. This effectively removes the
@@ -83,7 +83,7 @@ Setup Native Compile when the time comes
               (last native-comp-eln-load-path)))
 #+end_src
 
-#+begin_src emacs-lisp :tangle early-init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
     ;;; ============================================================================
     ;;; Set up the package manager
     ;;; ============================================================================
@@ -116,7 +116,7 @@ Setup Native Compile when the time comes
 #+end_src
 
 * Init
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
   ;;;; -*- lexical-binding: t; -*-
 
 (require 'dn-util)
@@ -138,7 +138,7 @@ Setup Native Compile when the time comes
 (require 'dn-key-bindings)
 #+end_src
 * dn-util
-#+begin_src emacs-lisp :tangle lisp/dn-util.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-util.el
   ;;;; -*- lexical-binding: t; -*-
 
 (require 'recentf)
@@ -258,7 +258,7 @@ Setup Native Compile when the time comes
 #+end_src
 
 * dn-setup
-#+begin_src emacs-lisp :tangle lisp/dn-setup.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-setup.el
 ;;;; -*- lexical-binding: t; -*-
 
 ;; Install setup.el. We use this to concisely perform repetitive tasks, such as
@@ -395,7 +395,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 
 #+end_src
 * dn-settings
-#+begin_src emacs-lisp :tangle lisp/dn-settings.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-settings.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup appearance
@@ -547,7 +547,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 
 #+end_src
 * dn-pkg-startup
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-startup.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-startup.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup show-startup-time
@@ -588,7 +588,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-startup)
 #+end_src
 * dn-pkg-builtin
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-builtin.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-builtin.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup auto-fill
@@ -722,7 +722,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-builtin)
 #+end_src
 * dn-pkg-util
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-util.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-util.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg alert)
@@ -763,7 +763,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-util)
 #+end_src
 * dn-pkg-ui
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-ui.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-ui.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg all-the-icons)
@@ -933,7 +933,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-ui)
 #+end_src
 * dn-pkg-editing
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-editing.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-editing.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg aggressive-indent)
@@ -1010,7 +1010,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-editing)
 #+end_src
 * dn-pkg-completion
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-completion.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-completion.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg company)
@@ -1095,7 +1095,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-completion)
 #+end_src
 * dn-pkg-window
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-window.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-window.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg ace-window)
@@ -1141,7 +1141,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-window)
 #+end_src
 * dn-pkg-project
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-project.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-project.el
  ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg git-timemachine)
@@ -1213,7 +1213,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-project)
 #+end_src
 * dn-pkg-lang-org
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-org.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-lang-org.el
   ;;;; -*- lexical-binding: t; -*-
 
 (defvar mf/dir-notes
@@ -1365,7 +1365,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-lang-org)
 #+end_src
 * dn-pkg-lang-lisp
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-lisp.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-lang-lisp.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup (:pkg evil-cleverparens)
@@ -1444,7 +1444,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-lang-lisp)
 #+end_src
 * dn-pkg-lang-elisp
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-elisp.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-lang-elisp.el
   ;;;; -*- lexical-binding: t; -*-
 
 (setup elisp-mode
@@ -1487,7 +1487,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-lang-elisp)
 #+end_src
 * dn-pkg-lang-common-lisp
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-common-lisp.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-lang-common-lisp.el
   ;;;; -*- lexical-binding: t; -*-
 
 (defvar mf/cl-implementations
@@ -1614,7 +1614,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (provide 'dn-pkg-lang-common-lisp)
 #+end_src
 * dn-pkg-lang-scheme
-#+begin_src emacs-lisp :tangle lisp/dn-pkg-lang-scheme.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-pkg-lang-scheme.el
 ;;;; -*- lexical-binding: t; -*-
 
 (provide 'dn-pkg-lang-scheme)
@@ -1622,7 +1622,7 @@ to all elements of STATE. This is intended to be used with ':bind'."
 (setup (:pkg geiser))
 #+end_src
 * dn-key-bindings
-#+begin_src emacs-lisp :tangle lisp/dn-key-bindings.el
+#+begin_src emacs-lisp :tangle ~/.emacs.d/lisp/dn-key-bindings.el
   ;;;; -*- lexical-binding: t; -*-
 
 ;;; ============================================================================
