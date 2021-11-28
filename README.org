@@ -1,0 +1,104 @@
+#+TITLE: My Super Duper Literate Emacs Config
+#+AUTHOR: Daniel W. Newman
+#+EMAIL: dan@danlovesprogramming.com
+#+DATE: <2021-11-27 Sun>
+#+CREATED: 2021-11-27
+#+STARTUP: showall hidestars indent
+#+PROPERTY: header-args :results silent :tangle "./init.el"
+
+*This file is the program.*
+
+This is my attempt to create a literate Emacs configuration that produces seperate ~.el~ files.
+
+* Introduction
+
+All of the *tangled* code in this ~README.org~ is Emacs Lisp. though there are some code snippets that I don't want to tangle.
+
+To stop Emacs from tangling a block of code add ~:tangle no~ for example: ~#+begin_src emacs-lisp :tangle no~
+
+** Installation
+*** Clone Repo
+I recommend forking this repo so you can personalize certain settings and also changes I make don't affect your configuration.
+
+#+begin_src sh :tangle no
+git clone git@github.com:YOURUSERNAME/systemcrafteremacs
+#+end_src
+
+** Creating EL files and linking to your home directory
+
+I use a program called [[https://thoughtbot.com/blog/rcm-for-rc-files-in-dotfiles-repos][rcm]] to manage my dotfiles, but if you want to manage them manually then follow these directions
+
+Use this file and Emacs' ~org-babel~ feature to:
+
+1. generate an ~init.el~ file in the same directory as this file, and
+2. create a symbolic link from ~./init.el~ to ~$HOME/emacs.d/init.el~ .
+
+Carefully follow the instructions below to generate your first ~init.el~ in the same directory as this file.
+
+*** Backup
+
+Before using this literate program, first backup current ~$HOME/emacs.d/init.el~
+
+*** Edit
+Now edit this ~README.org~ file to suit. That means:
+
+1. Set ~:tangle no~ to any blocks you want to disable, or delete them entirely, and
+2. edit any blocks to configure Emacs differently /on the first run/.
+
+Edit the following, unless you are me. This is the first thing that will be tangled.
+
+#+begin_src emacs-lisp
+  ;;; init.el --- Emacs initialization file tangled from a README.org file
+  ;;
+  ;;  Author: Daniel Newman <dan@danlovesprogramming.com>
+  ;;  URL: https://github.com/floatingman/systemcrafteremacs
+  ;;  ============================================================================
+
+  ;;; User setting
+  ;;  ----------------------------------------------------------------------------
+
+  (setq user-full-name "Daniel Newman"
+        user-mail-address "")
+#+end_src
+
+*** Save
+
+When you save, Emacs will ask if you want to "Tangle?" and then "Reload?" On first save, say "Yes" to "Tangle?" and say "No" to "Reload?"
+
+Now the file ~init.el~ exists in the same directory as this ~README.org~ file.
+
+*** Link
+
+Finally, link the ~./init.el~ file and required ~elisp/~ directory into your ~$HOME/.emacs.d/~ directory:
+
+#+begin_src bash :tangle no
+  mv ~/.emacs.d/init.el ~/.emacs.d/init.el.bak
+  ln -s ./init.el ~/.emacs.d/
+  ln -s ./elisp ~/.emacs.d/
+#+end_src
+
+Now when Emacs asks if you want to "Tangle?" and "Reload?" you can say "Yes" and the updated and re-tangled ~init.el~ will be loaded as the ~user-init-file~.
+
+** Tangle and Reload
+
+There are three ways to tangle this file:
+
+1. Use ~M-x org-babel-tangle~ (~C-c C-v t~).
+
+2. Position cursor inside the following code block and do ~C-c C-c~:
+
+    #+begin_src emacs-lisp :tangle no
+      (org-babel-tangle)
+    #+end_src
+
+3. Just edit and save, and let the ~after-save-hook~, defined in the [[#conclusion][Conclusion]], do its thing.
+
+*** Reload
+
+To reload, just do ~M-: (load-file user-init-file) RET~
+
+Or, position cursor inside the following and do ~C-c C-c~:
+
+#+begin_src emacs-lisp :tangle no
+  (load-file user-init-file)
+#+end_src
