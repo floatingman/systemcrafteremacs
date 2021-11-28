@@ -4,13 +4,17 @@
 #+DATE: <2021-11-27 Sun>
 #+CREATED: 2021-11-27
 #+STARTUP: showall hidestars indent
-#+PROPERTY: header-args :results silent :tangle "./init.el"
+#+PROPERTY: header-args :results silent :mkdirp yes
+#+OPTIONS: author:t creator:t timestamp:t email:t
 
 *This file is the program.*
 
 This is my attempt to create a literate Emacs configuration that produces seperate ~.el~ files.
 
 * Introduction
+:PROPERTIES:
+:header-args: :tangle init.el
+:END:
 
 All of the *tangled* code in this ~README.org~ is Emacs Lisp. though there are some code snippets that I don't want to tangle.
 
@@ -58,7 +62,7 @@ Edit the following, unless you are me. This is the first thing that will be tang
   ;;  ----------------------------------------------------------------------------
 
   (setq user-full-name "Daniel Newman"
-        user-mail-address "")
+        user-mail-address "dan@danlovesprogramming.com")
 #+end_src
 
 *** Save
@@ -101,4 +105,44 @@ Or, position cursor inside the following and do ~C-c C-c~:
 
 #+begin_src emacs-lisp :tangle no
   (load-file user-init-file)
+#+end_src
+
+** Features
+I like to keep seperate features versus one huge init.el file in order
+to either turn related functionality off or make life eaiser when
+debugging issues.
+
+#+begin_src emacs-lisp
+(require 'init-org)
+#+end_src
+
+* Org-mode
+:PROPERTIES:
+:header-args: :tangle lisp/init-org.el :mkdirp yes
+:END:
+
+I have long used a config for org-mode I found at [[http://doc.norang.ca/org-mode.html][Organize Your Life
+In Plain Text]] I've tried other configurations, but something about
+this configuration is burned in my brain and I find it so easy to use.
+
+** Getting Started
+
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(require 'org)
+;;
+;; Standard key bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+#+end_src
+
+This is all you need to get started
+
+** The end
+
+Lastly, lets create the provide the org-mode feature
+
+#+begin_src emacs-lisp
+(provide 'init-org)
 #+end_src
