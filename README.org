@@ -107,7 +107,17 @@ Or, position cursor inside the following and do ~C-c C-c~:
   (load-file user-init-file)
 #+end_src
 
+** Temp files
+#+begin_src emacs-lisp
+(setq user-emacs-directory
+      (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache/")))
+#+end_src
+** Load Path
+#+begin_src emacs-lisp
+(push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
+#+end_src
 ** Features
+
 I like to keep seperate features versus one huge init.el file in order
 to either turn related functionality off or make life eaiser when
 debugging issues.
