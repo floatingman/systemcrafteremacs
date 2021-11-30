@@ -123,9 +123,23 @@ to either turn related functionality off or make life eaiser when
 debugging issues.
 
 #+begin_src emacs-lisp
+(require 'init-vc)
 (require 'init-org)
 #+end_src
 
+* Version Control
+:PROPERTIES:
+:header-args: :tangle lisp/init-vc.el :mkdirp yes
+:END:
+** Symlinks
+Follow all symlinks
+#+begin_src emacs-lisp
+  (setq vc-follow-symlinks t)
+#+end_src
+** Provide feature
+#+begin_src emacs-lisp
+(provide 'init-vc)
+#+end_src
 * Org-mode
 :PROPERTIES:
 :header-args: :tangle lisp/init-org.el :mkdirp yes

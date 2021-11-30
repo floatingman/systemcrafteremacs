@@ -15,4 +15,5 @@
 
 (push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
 
+(require 'init-vc)
 (require 'init-org)
