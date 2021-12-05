@@ -107,6 +107,17 @@ Or, position cursor inside the following and do ~C-c C-c~:
   (load-file user-init-file)
 #+end_src
 
+
+* General Configuration
+:PROPERTIES:
+:header-args: :tangle lisp/init-config.el
+:END:
+** Backups
+This is one of the things people usually want to change right away. By default, Emacs saves backup files in the current directory. These are the files ending in =~= that are cluttering up your directory lists. The following code stashes them all in =~/.config/emacs/backups=, where I can find them with =C-x C-f= (=find-file=) if I really need to.
+
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
+#+END_SRC
 ** Temp files
 #+begin_src emacs-lisp
 (setq user-emacs-directory
@@ -114,7 +125,15 @@ Or, position cursor inside the following and do ~C-c C-c~:
 #+end_src
 ** Load Path
 #+begin_src emacs-lisp
-(push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
+  ;; This sets up the load path so that we can override it
+  (setq warning-suppress-log-types '((package reinitialization)))  (package-initialize)
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
+  (push (expand-file-name "vendor/org-mode/lisp" (file-name-directory user-init-file)) load-path)
+  (push (expand-file-name "vendor/org-mode/contrib/lisp" (file-name-directory user-init-file)) load-path)
+  (setq custom-file "~/.config/emacs/custom-settings.el")
+  (setq use-package-always-ensure t)
+  (load custom-file t)
+  (push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
 #+end_src
 ** Features
 

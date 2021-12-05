@@ -9,11 +9,3 @@
 
 (setq user-full-name "Daniel Newman"
       user-mail-address "dan@danlovesprogramming.com")
-
-(setq user-emacs-directory
-      (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache/")))
-
-(push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
-
-(require 'init-vc)
-(require 'init-org)
