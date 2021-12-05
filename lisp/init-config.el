@@ -3,15 +3,33 @@
 (setq user-emacs-directory
       (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache/")))
 
-;; This sets up the load path so that we can override it
-(setq warning-suppress-log-types '((package reinitialization)))  (package-initialize)
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
-(push (expand-file-name "vendor/org-mode/lisp" (file-name-directory user-init-file)) load-path)
-(push (expand-file-name "vendor/org-mode/contrib/lisp" (file-name-directory user-init-file)) load-path)
-(setq custom-file "~/.config/emacs/custom-settings.el")
-(setq use-package-always-ensure t)
-(load custom-file t)
-(push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq vc-make-backup-files t)
+(setq auto-save-file-name-transforms '((".*" "~/.cache/emacs/auto-save-list/" t)))
 
-(require 'init-vc)
-(require 'init-org)
+(setq savehist-file "~/.cache/emacs/savehist")
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+
+;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+(setq url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+;; Use no-littering to automatically set common paths to the new user-emacs-directory
+(setup (:straight no-littering)
+  (require 'no-littering))
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+
+(provide 'init-config)
