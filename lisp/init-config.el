@@ -1,35 +1,31 @@
-(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
-
 (setq user-emacs-directory
       (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache/")))
 
 (setq delete-old-versions -1)
 (setq version-control t)
 (setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.cache/emacs/auto-save-list/" t)))
 
-(setq savehist-file "~/.cache/emacs/savehist")
-(savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
+(setup savehist
+  (setq history-length 25)
+  (savehist-mode 1))
 
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq url-history-file (expand-file-name "url/history" user-emacs-directory))
+(defun dw/org-file-jump-to-heading (org-file heading-title)
+  (interactive)
+  (find-file (expand-file-name org-file))
+  (goto-char (point-min))
+  (search-forward (concat "* " heading-title))
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree)
+  (forward-line))
 
-;; Use no-littering to automatically set common paths to the new user-emacs-directory
-(setup (:straight no-littering)
-  (require 'no-littering))
-
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
+(defun dw/org-file-show-headings (org-file)
+  (interactive)
+  (find-file (expand-file-name org-file))
+  (counsel-org-goto)
+  (org-overview)
+  (org-reveal)
+  (org-show-subtree)
+  (forward-line))
 
 (provide 'init-config)
