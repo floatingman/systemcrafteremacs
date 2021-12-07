@@ -36,10 +36,12 @@
 
 (set-default-coding-systems 'utf-8)
 
+(require 'init-system)
 (require 'init-config)
 (require 'init-evil)
 (require 'init-themes)
 (require 'init-completion)
+(require 'init-projects)
 (require 'init-vc)
 (require 'init-org)
 (require 'init-keybindings)
