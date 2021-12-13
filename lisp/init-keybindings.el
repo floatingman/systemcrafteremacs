@@ -1,19 +1,19 @@
 (provide 'init-keybindings)
 
-(setup (:straight hydra)
-  (require 'hydra))
+(use-package  hydra)
 
-(setup (:straight which-key)
-  (diminish 'which-key-mode)
+(use-package which-key
+  :diminish 'which-key-mode'
+  :config
   (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
-(setup (:straight evil-org)
-  (:hook-into org-mode org-agenda-mode)
-  (require 'evil-org)
-  (require 'evil-org-agenda)
+(use-package evil-org
+             :config
+  :hook (org-mode org-agenda-mode)
+  :config
   (evil-org-set-key-theme '(navigation todo insert textobjects additional))
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
 
 (dn/leader-key-def
   "o"   '(:ignore t :which-key "org mode")
@@ -28,7 +28,7 @@
   "oa"  '(org-agenda :which-key "status")
   "ot"  '(org-todo-list :which-key "todos")
   "oc"  '(org-capture t :which-key "capture")
-  "ox"  '(org-export-dispatch t :which-key "export"))
+  "ox"  '(org-export-dispatch t :which-key "export")))
 
 (dn/leader-key-def
   "fn" '((lambda () (interactive) (counsel-find-file "~/Notes/")) :which-key "notes")

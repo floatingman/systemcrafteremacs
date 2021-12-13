@@ -4,7 +4,8 @@
   (persp-switch (projectile-project-name))
   (magit-status))
 
-(setup (:straight projectile)
+(use-package projectile
+:config
   (when (file-directory-p "~/Repos")
     (setq projectile-project-search-path '("~/Repos")))
   (setq projectile-switch-project-action #'dw/switch-project-action)

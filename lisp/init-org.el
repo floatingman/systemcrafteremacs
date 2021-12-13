@@ -1,55 +1,4 @@
-;; TODO: Mode this to another section
-(setq-default fill-column 80)
-
-;; Turn on indentation and auto-fill mode for Org files
-(defun dw/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil)
-  (diminish org-indent-mode))
-
-
-(setup (:straight org)
-  (:also-load org-tempo)
-  (:hook dw/org-mode-setup)
-  (setq org-hide-emphasis-markers t
-        org-src-fontify-natively t
-        org-fontify-quote-and-verse-blocks t
-        org-src-tab-acts-natively t
-        org-edit-src-content-indentation 2
-        org-hide-block-startup nil
-        org-src-preserve-indentation nil
-        org-startup-folded 'content
-        org-cycle-separator-lines 2
-        org-capture-bookmark nil)
-
-  (setq org-modules
-    '(org-crypt
-        org-habit
-        org-bookmark
-        org-eshell
-        org-irc))
-
-  (setq org-refile-targets '((nil :maxlevel . 1)
-                             (org-agenda-files :maxlevel . 1)))
-
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path t)
-
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
-
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
-
-  (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)
-      ))
-
-  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+(use-package org)
 
 (defun dw/time-add-days (time days)
   (let* ((decoded-time (decode-time time))
@@ -308,8 +257,8 @@ capture was not aborted."
          :empty-lines 1)))
 
 ;; This is needed as of Org 9.2
-(setup org-tempo
-  (:when-loaded
+(use-package org-tempo
+  :config
     (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("li" . "src lisp"))
@@ -318,9 +267,9 @@ capture was not aborted."
     (add-to-list 'org-structure-template-alist '("py" . "src python"))
     (add-to-list 'org-structure-template-alist '("go" . "src go"))
     (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-    (add-to-list 'org-structure-template-alist '("json" . "src json"))))
+    (add-to-list 'org-structure-template-alist '("json" . "src json")))
 
-(setup (:straight org-make-toc)
-  (:hook-into org-mode))
+(use-package  org-make-toc
+  :hook org-mode)
 
 (provide 'init-org)
