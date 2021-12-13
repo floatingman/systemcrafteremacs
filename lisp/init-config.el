@@ -1,6 +1,7 @@
 (setq user-emacs-directory
       (expand-file-name "emacs/" (or (getenv "XDG_CACHE_HOME") "~/.cache/")))
 
+(setq delete-old-versions -1)
 (setq version-control t)
 (setq vc-make-backup-files t)
 

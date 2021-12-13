@@ -10,7 +10,7 @@
   (setq undo-tree-visualizer-diff t))
 
     (use-package  evil
-      :config
+      :init
       ;; Pre-load configuration
       (setq evil-want-integration t)
       (setq evil-want-keybinding nil)
@@ -18,7 +18,7 @@
       (setq evil-want-C-i-jump nil)
       (setq evil-respect-visual-line-mode t)
       (setq evil-undo-system 'undo-tree)
-
+      :config
       ;; Activate the Evil
       (evil-mode 1)
 
@@ -44,16 +44,16 @@
       (evil-set-initial-state 'messages-buffer-mode 'normal)
       (evil-set-initial-state 'dashboard-mode 'normal))
 
-    (use-package evil-collection
-      :init
+;;    (use-package evil-collection
+;;      :init
       ;; Is this a bug in evil-collection?
-      (setq evil-collection-company-use-tng nil)
-      :after (evil)
-      :config
-      (evil-collection-outline-bind-tab-p nil
-      (remove evil-collection-mode-list) 'lispy
-      (remove evil-collection-mode-list) 'org-present)
-      (evil-collection-init))
+;;      (setq evil-collection-company-use-tng nil)
+;;      :after (evil)
+;;      :config
+;;      (setq evil-collection-outline-bind-tab-p nil)
+;;      ((remove evil-collection-mode-list) 'lispy)
+;;      ((remove evil-collection-mode-list) 'org-present)
+;;      (evil-collection-init))
 
 (use-package general
   :init
