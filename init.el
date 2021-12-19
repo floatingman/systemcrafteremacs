@@ -53,6 +53,7 @@
 (require 'init-config)
 (require 'init-evil)
 (require 'init-themes)
+(require 'init-languages)
 (require 'init-completion)
 (require 'init-projects)
 (require 'init-vc)

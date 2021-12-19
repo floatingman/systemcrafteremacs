@@ -1,3 +1,5 @@
+(tool-bar-mode -1)
+
 (setq my/frame-font-name "New Heterodox Mono")
 ;;(setq my/frame-font-name "Iosevka")
 

@@ -1,5 +1,8 @@
 (use-package org)
 
+(use-package org-superstar
+  :hook (org-mode . org-superstar-mode))
+
 (defun dw/time-add-days (time days)
   (let* ((decoded-time (decode-time time))
 	 (year         (nth 5 decoded-time))
