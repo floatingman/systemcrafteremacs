@@ -1,7 +1,10 @@
 (tool-bar-mode -1)
 
-(setq my/frame-font-name "New Heterodox Mono")
+(use-package solarized-theme)
+
+;;(setq my/frame-font-name "New Heterodox Mono")
 ;;(setq my/frame-font-name "Iosevka")
+(setq my/frame-font-name "JetBrains Mono")
 
 (defun my/fontify-frame (frame)
   (interactive)

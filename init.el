@@ -51,7 +51,7 @@
 
 (require 'init-system)
 (require 'init-config)
-(require 'init-evil)
+(require 'init-editing)
 (require 'init-themes)
 (require 'init-languages)
 (require 'init-completion)

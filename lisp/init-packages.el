@@ -1,11 +1,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(setq package-archive-ties '(("melpa-stable" . 1)))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
 (package-initialize)
 
@@ -14,14 +10,22 @@
           (add-to-list 'load-path (expand-file-name x emacs-git)))
         (delete ".." (directory-files emacs-git))))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(when (not package-archive-contents)
+  (package-refresh-contents))
+(package-install 'use-package)
 
-(eval-when-compile (require 'use-package))
+(use-package use-package-ensure
+    :config  (setq use-package-always-ensure t))
 
-(setq use-package-verbose t)
-
-(setq use-package-always-ensure t)
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
 (provide 'init-packages)
