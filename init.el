@@ -51,8 +51,8 @@
 
 (require 'init-system)
 (require 'init-config)
-(require 'init-editing)
 (require 'init-themes)
+(require 'init-editing)
 (require 'init-languages)
 (require 'init-completion)
 (require 'init-projects)

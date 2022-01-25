@@ -1,6 +1,10 @@
+(blink-cursor-mode -1)       ;no cursor blinking
+(menu-bar-mode -1)           ;no menu, you can toggle it with C-c m
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-(use-package solarized-theme)
+(use-package solarized-theme
+  :config (load-theme 'solarized-light t))
 
 ;;(setq my/frame-font-name "New Heterodox Mono")
 ;;(setq my/frame-font-name "Iosevka")
