@@ -56,6 +56,7 @@
 (require 'init-languages)
 (require 'init-completion)
 (require 'init-projects)
+(require 'init-shell)
 (require 'init-vc)
 (require 'init-org)
 (require 'init-keybindings)
