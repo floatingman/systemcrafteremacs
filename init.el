@@ -47,7 +47,10 @@
 ;; This sets up the load path so that we can override it
 (push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
 
-(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
 
 (require 'init-system)
 (require 'init-config)

@@ -9,6 +9,7 @@
 ;;(setq my/frame-font-name "New Heterodox Mono")
 ;;(setq my/frame-font-name "Iosevka")
 (setq my/frame-font-name "JetBrains Mono")
+;;(setq my/frame-font-name "fixed")
 
 (defun my/fontify-frame (frame)
   (interactive)

@@ -1,5 +1,3 @@
-(setq vc-follow-symlinks t)
-
 (use-package magit
   :demand
   :diminish magit-wip-after-apply-mode
@@ -23,5 +21,12 @@
     (defun gac ()
       (interactive)
       (gac-commit))))
+
+(use-package diff-hl
+  :demand
+  :config
+  (global-diff-hl-mode 1)
+  (eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
 
 (provide 'init-vc)
