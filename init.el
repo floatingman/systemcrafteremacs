@@ -61,5 +61,6 @@
 (require 'init-projects)
 (require 'init-shell)
 (require 'init-vc)
+(require 'init-dired)
 (require 'init-org)
 (require 'init-keybindings)
