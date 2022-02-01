@@ -3,8 +3,13 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(use-package solarized-theme
-  :config (load-theme 'solarized-light t))
+(defun my-setup-color-theme ()
+  (interactive)
+  (when (display-graphic-p)
+    (modus-themes-load-vivendi)))
+(use-package modus-themes :config (my-setup-color-theme))
+;;(use-package solarized-theme
+;;  :config (load-theme 'solarized-light t))
 
 ;;(setq my/frame-font-name "New Heterodox Mono")
 ;;(setq my/frame-font-name "Iosevka")

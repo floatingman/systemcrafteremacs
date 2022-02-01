@@ -47,6 +47,11 @@
   ;;(setq recentf-save-file (expand-file-name "~/.recentf"))
   (recentf-mode 1))
 
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (my-setup-color-theme)))
+
 (defvar my-todo "~/.emacs.d/README.org")
 
 (setq
@@ -76,7 +81,6 @@
  split-width-threshold 140              ;split horizontally only if less than 160 columns
  safe-local-variable-values '((engine . django))
  switch-to-buffer-preserve-window-point t ;this allows operating on the same buffer in diff. positions
- custom-file (expand-file-name "custom-file.el" user-emacs-directory) ;don't pollute the init file and don't `load' the customs but keep them for reference...
  initial-buffer-choice my-todo)
 
 ;; disable full `yes' or `no' answers, `y' and `n' suffices

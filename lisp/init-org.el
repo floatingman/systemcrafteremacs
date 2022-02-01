@@ -1,20 +1,28 @@
-(use-package org)
+(use-package org
+  :load-path ("~/Repos/org-mode/lisp" "~/Repos/org-contrib/lisp")
+  :config
+  (require 'oc-basic)                   ; started needing this
+  (unless (functionp 'org-link-make-string)
+    (fset 'org-link-make-string 'org-make-link-string))
+  )
+
+(setq org-modules '(org-habit
+                    org-mouse
+                    org-protocol
+                    org-annotate-file
+                    org-eval
+                    org-expiry
+                    org-interactive-query
+                    org-collector
+                    org-panel
+                    org-screen
+                    org-toc))
+(eval-after-load 'org
+  '(org-load-modules-maybe t))
+;; Prepare stuff for org-export-backends
+(setq org-export-backends '(org latex icalendar html ascii))
 
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode))
-
-;; This is needed as of Org 9.2
-    (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-    (add-to-list 'org-structure-template-alist '("li" . "src lisp"))
-    (add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-    (add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-    (add-to-list 'org-structure-template-alist '("py" . "src python"))
-    (add-to-list 'org-structure-template-alist '("go" . "src go"))
-    (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-    (add-to-list 'org-structure-template-alist '("json" . "src json"))
-
-(use-package  org-make-toc
-  :hook org-mode)
 
 (provide 'init-org)

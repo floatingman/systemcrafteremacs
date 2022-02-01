@@ -15,6 +15,8 @@
 (setq user-full-name "Daniel Newman"
       user-mail-address "dan@danlovesprogramming.com")
 
+(load-file "~/.emacs.d/lisp/init-system.el")
+
 (load-file "~/.emacs.d/lisp/init-packages.el")
 
 ;; Use a hook so the message doesn't get clobbered by other messages.
@@ -37,22 +39,19 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
-
 ;; This sets up the load path so that we can override it
 (push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
+(add-to-list 'load-path "~/Repos/org-mode/lisp")
+(add-to-list 'load-path "~/Repos/org-contrib/lisp")
+(setq custom-file "~/.config/emacs/custom-settings.el")
+(load custom-file t)
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
 
-(require 'init-system)
 (require 'init-config)
 (require 'init-themes)
 (require 'init-editing)
