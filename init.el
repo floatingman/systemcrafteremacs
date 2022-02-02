@@ -62,4 +62,5 @@
 (require 'init-vc)
 (require 'init-dired)
 (require 'init-org)
+(require 'init-misc-packages)
 (require 'init-keybindings)

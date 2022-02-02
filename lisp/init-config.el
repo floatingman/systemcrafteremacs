@@ -55,7 +55,7 @@
 (defvar my-todo "~/.emacs.d/README.org")
 
 (setq
- inhibit-startup-message t
+ inhibit-startup-message t              ;no annoying starup screen
  require-final-newline t                ;auto add newline at the end of file
  column-number-mode t                   ;show the column number
  default-major-mode 'text-mode          ;use text mode per default
@@ -68,10 +68,8 @@
  recentf-max-saved-items 5000           ;save up to 5000 recent files
  eval-expression-print-length nil       ;do not truncate printed expressions
  eval-expression-print-level nil        ;print nested expressions
- send-mail-function 'sendmail-send-it
  kill-ring-max 5000                     ;truncate kill ring after 5000 entries
  mark-ring-max 5000                     ;truncate mark ring after 5000 entries
- mouse-autoselect-window -.1            ;window focus follows the mouse pointer
  mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))) ;make mouse scrolling smooth
  indicate-buffer-boundaries 'left       ;fringe markers (on the left side)
  enable-recursive-minibuffers t         ;whatever...
@@ -79,7 +77,6 @@
  load-prefer-newer t                    ;prefer newer .el instead of the .elc
  split-height-threshold 140             ;more readily split horziontally
  split-width-threshold 140              ;split horizontally only if less than 160 columns
- safe-local-variable-values '((engine . django))
  switch-to-buffer-preserve-window-point t ;this allows operating on the same buffer in diff. positions
  initial-buffer-choice my-todo)
 
