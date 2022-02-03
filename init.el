@@ -53,6 +53,7 @@
 (prefer-coding-system 'utf-8)
 
 (require 'init-config)
+(require 'init-keybindings)
 (require 'init-themes)
 (require 'init-editing)
 (require 'init-languages)
@@ -63,4 +64,3 @@
 (require 'init-dired)
 (require 'init-org)
 (require 'init-misc-packages)
-(require 'init-keybindings)
