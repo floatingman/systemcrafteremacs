@@ -210,7 +210,7 @@
   (key-chord-define-global "  " 'my-insert-space-or-expand)
   (key-chord-define-global "vv" 'god-mode-all)
   (key-chord-define-global "JJ" 'my-switch-to-previous-buffer)
-  (key-chord-mode -1)) ;; disable for now
+  (key-chord-mode 1)) ;; disable for now
 
 (bind-key "C-t" 'my-key-chord-commands/body)
 

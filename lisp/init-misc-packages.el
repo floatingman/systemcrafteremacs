@@ -31,3 +31,13 @@
    ("d" engine/search-duckduckgo "duckduckgo")
    ("gh" engine/search-github "github")
    ("e" engine/search-emacswiki "emacswiki")))
+
+(use-package eyebrowse)
+(use-package eyebrowse-restore
+  :ensure t
+  :quelpa (eyebrowse-restore
+           :fetcher github
+           :repo "FrostyX/eyebrowse-restore"
+           :branch "main")
+  :config
+  (eyebrowse-restore-mode))
