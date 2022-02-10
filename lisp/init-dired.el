@@ -27,16 +27,4 @@
     ;; allow changing of file permissions
     (setq wdired-allow-to-change-permissions t))
 
-  ;; dired+ adds some features to standard dired (like reusing buffers)
-  (use-package dired+
-    :ensure nil
-    :quelpa (dired+ :fetcher url :url "https://www.emacswiki.org/emacs/download/dired+.el")
-    :defer 1
-    :init
-    (setq diredp-hide-details-initially-flag nil)
-    (setq diredp-hide-details-propagate-flag nil)
-
-    :config
-    (diredp-toggle-find-file-reuse-dir 1)))
-
 (provide 'init-dired)

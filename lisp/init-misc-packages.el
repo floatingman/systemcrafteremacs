@@ -34,10 +34,8 @@
 
 (use-package eyebrowse)
 (use-package eyebrowse-restore
-  :ensure t
-  :quelpa (eyebrowse-restore
-           :fetcher github
-           :repo "FrostyX/eyebrowse-restore"
-           :branch "main")
+  (:host github
+   :repo "FrostyX/eyebrowse-restore"
+   :branch "main")
   :config
   (eyebrowse-restore-mode))
