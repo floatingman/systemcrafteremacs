@@ -8,10 +8,18 @@
 
 (package-initialize)
 
-(let ((emacs-git "~/.emacs.d/git/"))
-  (mapc (lambda (x)
-          (add-to-list 'load-path (expand-file-name x emacs-git)))
-        (delete ".." (directory-files emacs-git))))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (when (not package-archive-contents)
   (package-refresh-contents))
