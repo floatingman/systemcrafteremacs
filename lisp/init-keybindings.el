@@ -2,8 +2,10 @@
 
 (use-package  hydra :commands defhydra)
 (use-package use-package-hydra)
-(if my-laptop-p
-    (use-package hydra-posframe :if my-laptop-p (hydra-posframe :type github :repo "Ladicle/hydra-posframe") :after hydra))
+(use-package hydra-posframe
+  :if my-laptop-p
+  :straight (:host github :repo "Ladicle/hydra-posframe")
+  :after hydra)
 
 (with-eval-after-load 'hydra
   (defhydra my-window-movement ()

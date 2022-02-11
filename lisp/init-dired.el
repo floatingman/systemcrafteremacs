@@ -1,5 +1,5 @@
 (use-package dired
-  :ensure nil
+  :straight nil
   :demand
   :init
   (defun my-find-name-dired (pattern)
@@ -18,9 +18,7 @@
   (setq dired-no-confirm
         '(byte-compile chgrp chmod chown copy delete load move symlink))
   (setq dired-deletion-confirmer (lambda (x) t))
-  :bind (:map dired-mode-map ("`" . dired-toggle-read-only))
-  :config
-
+  :bind (:map dired-mode-map ("`" . dired-toggle-read-only)))
   ;; Rename files editing their names in dired buffers
   (use-package wdired
     :init

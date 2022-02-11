@@ -21,7 +21,7 @@
   (show-paren-mode t))
 
 (use-package prog-mode
-  :ensure nil
+  :straight nil
   :config
   (defun my-prog-mode-hook ()
     (setq show-trailing-whitespace 1)

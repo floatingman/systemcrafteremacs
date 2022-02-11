@@ -34,8 +34,6 @@
 
 (use-package eyebrowse)
 (use-package eyebrowse-restore
-  (:host github
-   :repo "FrostyX/eyebrowse-restore"
-   :branch "main")
+  :straight (:host github :repo "FrostyX/eyebrowse-restore" :branch "main")
   :config
   (eyebrowse-restore-mode))
