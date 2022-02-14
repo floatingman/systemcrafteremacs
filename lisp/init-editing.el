@@ -28,6 +28,20 @@
     (prettify-symbols-mode 1))
   :hook (prog-mode . my-prog-mode-hook))
 
+(use-package anzu
+  :defer t
+  :bind ("M-%" . anzu-query-replace-regexp)
+  :config
+  (progn
+    (use-package thingatpt)
+    (setq anzu-mode-lighter ""
+          ;; spaceline already takes care of this
+          anzu-cons-mode-line-p nil)
+    (set-face-attribute 'anzu-mode-line nil :foreground "yellow")))
+
+(add-hook 'prog-mode-hook #'anzu-mode)
+(add-hook 'org-mode-hook #'anzu-mode)
+
 (use-package darkroom
   :bind ("S-<f11>" . darkroom-tentative-mode)
   :custom
@@ -35,5 +49,12 @@
   (darkroom-margins-if-failed-guess 0.1))
 
 (use-package default-text-scale)
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
 
 (provide 'init-editing)

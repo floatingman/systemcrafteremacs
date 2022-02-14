@@ -1,3 +1,12 @@
+(setq debug-on-error t)
+(setq debug-on-quit t)
+
+(let ((minver "25.1"))
+  (when (version< emacs-version minver)
+    (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
+(when (version< emacs-version "26.1")
+  (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
+
 (setq gc-cons-threshold (* 100 1000 1000))
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -64,3 +73,6 @@
 (require 'init-dired)
 (require 'init-org)
 (require 'init-misc-packages)
+
+(setq debug-on-error nil)
+(setq debug-on-quit nil)

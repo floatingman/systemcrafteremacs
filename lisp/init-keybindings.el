@@ -5,7 +5,9 @@
 (use-package hydra-posframe
   :if my-laptop-p
   :straight (:host github :repo "Ladicle/hydra-posframe")
-  :after hydra)
+  :after hydra
+  :hook
+  (after-init . hydra-posframe-enable))
 
 (with-eval-after-load 'hydra
   (defhydra my-window-movement ()

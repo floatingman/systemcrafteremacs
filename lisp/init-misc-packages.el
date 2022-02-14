@@ -29,7 +29,7 @@
    ("m" engine/search-mail "mail")
    ("g" engine/search-google "google")
    ("d" engine/search-duckduckgo "duckduckgo")
-   ("gh" engine/search-github "github")
+   ("h" engine/search-github "github")
    ("e" engine/search-emacswiki "emacswiki")))
 
 (use-package eyebrowse)
