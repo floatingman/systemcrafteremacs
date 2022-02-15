@@ -7,26 +7,25 @@
 (when (version< emacs-version "26.1")
   (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
 
-(setq gc-cons-threshold (* 100 1000 1000))
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 2 1000 1000))))
+;; This sets up the load path so that we can override it
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path "~/Repos/org-mode/lisp")
+(add-to-list 'load-path "~/Repos/org-contrib/lisp")
 
-;;; init.el --- Emacs initialization file tangled from a README.org file
-;;
-;;  Author: Daniel Newman <dan@danlovesprogramming.com>
-;;  URL: https://github.com/floatingman/systemcrafteremacs
-;;  ============================================================================
-
-;;; User setting
-;;  ----------------------------------------------------------------------------
+(let ((normal-gc-cons-threshold (* 20 1024 1024))
+      (init-gc-cons-threshold (* 128 1024 1024)))
+  (setq gc-cons-threshold init-gc-cons-threshold)
+  (add-hook 'emacs-startup-hook
+            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
 
 (setq user-full-name "Daniel Newman"
       user-mail-address "dan@danlovesprogramming.com")
 
-(load-file "~/.emacs.d/lisp/init-system.el")
+(require 'init-system)
 
-(load-file "~/.emacs.d/lisp/init-packages.el")
+(require 'init-utils)
+
+(require 'init-packages)
 
 ;; Use a hook so the message doesn't get clobbered by other messages.
 (add-hook 'emacs-startup-hook
@@ -47,14 +46,6 @@
 ;; Save auto-save files to the no-littering var folder
 (setq auto-save-file-name-transforms
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-
-;; This sets up the load path so that we can override it
-(push (expand-file-name "lisp/" (file-name-directory user-init-file)) load-path)
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
-(add-to-list 'load-path "~/Repos/org-mode/lisp")
-(add-to-list 'load-path "~/Repos/org-contrib/lisp")
-(setq custom-file "~/.config/emacs/custom-settings.el")
-(load custom-file t)
 
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)

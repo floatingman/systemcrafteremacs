@@ -1,3 +1,6 @@
+(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
+(defconst *is-a-mac* (eq system-type 'darwin))
+
 (defvar my-laptop-p (equal (system-name) "sunstreaker"))
 (defvar my-server-p (and (equal (system-name) "localhost") (equal user-login-name "dnewman")))
 (defvar my-phone-p (not (null (getenv "ANDROID_ROOT")))
