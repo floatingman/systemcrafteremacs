@@ -29,7 +29,6 @@
   :hook (prog-mode . my-prog-mode-hook))
 
 (use-package anzu
-  :defer t
   :bind ("M-%" . anzu-query-replace-regexp)
   :config
   (progn
