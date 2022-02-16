@@ -3,7 +3,6 @@
 (use-package  hydra :commands defhydra)
 (use-package use-package-hydra)
 (use-package hydra-posframe
-  :if my-laptop-p
   :straight (:host github :repo "Ladicle/hydra-posframe")
   :after hydra
   :hook
@@ -31,33 +30,13 @@
 
 (with-eval-after-load 'hydra
   (defhydra my-shortcuts (:exit t)
-    ("j" my-helm-journal "Journal")
-    ("C" my-resolve-orgzly-syncthing "Conflicts")
-    ("n" my-capture-timestamped-note "Note")
-    ("c" my-org-categorize-emacs-news/body "Categorize")
-    ("d" my-emacs-news-check-duplicates "Dupe")
     ("s" save-buffer "Save")
     ("f" my-file-shortcuts/body "File shortcut")
     ("+" text-scale-increase "Increase")
     ("-" text-scale-decrease "Decrease")
-    ("g" my-geeqie/body "Geeqie")
-    ("r" my-record-ffmpeg-toggle-recording "Record screen")
-    ("l" (my-toggle-or-create "*scratch*" (lambda () (switch-to-buffer (startup--get-buffer-create-scratch)))) "Lisp")
     ("e" eshell-toggle "Eshell")
-    ("w" my-engine-mode-hydra/body "Search web")
-    ("E" my-emacs-news/body "Emacs News"))
-  (global-set-key (kbd "<f5>") #'my-shortcuts/body)
-  (defhydra my-emacs-news (:exit t)
-    "Emacs News"
-    ("f" (find-file "~/sync/emacs-news/index.org") "News")
-    ("C" (find-file "~/code/emacs-calendar/README.org") "Calendar")
-    ("C" (find-file "/ssh:web:/var/www/emacslife.com/calendar/README.org" "Calendar on server"))
-    ("d" my-emacs-news-check-duplicates "Dupe")
-    ("c" my-org-categorize-emacs-news/body "Categorize")
-    ("h" (my-org-update-link-description "HN") "Link HN")
-    ("i" (my-org-update-link-description "Irreal") "Link Irreal")
-    ("m" my-share-emacs-news "Mail")
-    ("t" (browse-url "https://tweetdeck.twitter.com") "Twitter")))
+    ("w" my-engine-mode-hydra/body "Search web"))
+  (global-set-key (kbd "<f5>") #'my-shortcuts/body))
 
 (defun my-org-update-link-description (description)
   "Update the current link's DESCRIPTION."
@@ -170,7 +149,6 @@
 (fset 'key-chord-define 'my-key-chord-define)
 
 (use-package key-chord
-  :if my-laptop-p
   :hydra (my-key-chord-commands
           ()
           "Main"

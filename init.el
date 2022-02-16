@@ -67,3 +67,5 @@
 
 (setq debug-on-error nil)
 (setq debug-on-quit nil)
+
+(provide 'init)
